@@ -1,0 +1,42 @@
+{
+  "name": "TheBestOfYou - Fitness App",
+  "short_name": "TheBestOfYou",
+  "description": "Kalória és tápérték követő alkalmazás edzés naplóval",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#4f46e5",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1918x872",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Fitness App főképernyő"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "587x868",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Fitness App mobil nézet"
+    }
+  ],
+  "categories": ["health", "fitness", "lifestyle"],
+  "lang": "hu"
+}
