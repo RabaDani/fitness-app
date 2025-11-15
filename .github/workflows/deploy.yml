@@ -32,9 +32,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
-        env:
-          NODE_ENV: production
+        run: npm run build -- --base=/fitness-app/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
