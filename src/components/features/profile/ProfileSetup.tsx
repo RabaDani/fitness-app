@@ -36,7 +36,7 @@ export function ProfileSetup() {
         {/* Header */}
         <div class="grid grid-cols-3 items-center mb-6">
           <div class="flex justify-start">
-            <h2 class="heading-2 text-accent">
+            <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
               TheBestOfYou
             </h2>
           </div>
