@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 class Pwa {
   #serviceWorkerRegistration?: ServiceWorkerRegistration;
 
@@ -9,8 +11,9 @@ class Pwa {
 
   private async registerServiceWorker() {
     try {
-      this.#serviceWorkerRegistration = await navigator.serviceWorker.register('/sw.js', {
-        scope: '/'
+      const baseUrl = import.meta.env.BASE_URL;
+      this.#serviceWorkerRegistration = await navigator.serviceWorker.register(`${baseUrl}sw.js`, {
+        scope: baseUrl
       });
 
       console.log('✅ Service Worker registered successfully');
