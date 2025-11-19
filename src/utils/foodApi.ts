@@ -40,7 +40,7 @@ export const searchSpoonacularFoods = async (query: string): Promise<Food[]> => 
   const detailedFoods = await Promise.all(
     hits.map(async (hit: any) => {
       try {
-        const infoUrl = `https://api.spoonacular.com/food/ingredients/${hit.id}/information?amount=100&apiKey=${SPOONACULAR_API_KEY}`;
+        const infoUrl = `https://api.spoonacular.com/food/ingredients/${hit.id}/information?amount=100&unit=grams&apiKey=${SPOONACULAR_API_KEY}`;
         const infoResponse = await fetch(infoUrl);
 
         if (!infoResponse.ok) {
