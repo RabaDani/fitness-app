@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fitness-app-v1';
+const CACHE_NAME = 'fitness-app-v2';
 
 // Get the base path from the service worker location
 const getBasePath = () => {
