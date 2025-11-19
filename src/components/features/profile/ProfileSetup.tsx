@@ -27,7 +27,7 @@ export function ProfileSetup() {
     initialData: {},
     onSubmit: setProfile,
     trackChanges: false,
-    calculatePreview: true  // Enable preview for BMI and calorie display
+    calculatePreview: true  
   });
 
   return (
