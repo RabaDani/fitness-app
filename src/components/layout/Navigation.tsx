@@ -69,7 +69,7 @@ export function Navigation({
       </nav>
 
       {/* Mobile Navigation - Bottom */}
-      <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 safe-area-inset-bottom">
+      <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 safe-area-inset-bottom opacity-75">
         <div class="flex justify-around items-center px-2 py-2">
           {navItems.map(item => {
             const Icon = item.icon;

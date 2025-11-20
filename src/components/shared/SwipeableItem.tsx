@@ -33,6 +33,8 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
       startX.current = e.touches[0].clientX;
       currentX.current = translateX;
       setIsSwiping(true);
+      // Prevent parent swipe handlers from triggering
+      e.stopPropagation();
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -44,24 +46,28 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
       // Only allow swiping left (negative values)
       if (newTranslateX <= 0 && newTranslateX >= -deleteButtonWidth) {
         setTranslateX(newTranslateX);
+        // Prevent parent swipe handlers from triggering
+        e.stopPropagation();
       }
     };
 
-    const handleTouchEnd = () => {
+    const handleTouchEnd = (e: TouchEvent) => {
       setIsSwiping(false);
 
       if (translateX < -swipeThreshold) {
         // Swiped enough - trigger delete immediately
         handleDelete();
+        // Prevent parent swipe handlers from triggering
+        e.stopPropagation();
       } else {
         // Not swiped enough, reset
         setTranslateX(0);
       }
     };
 
-    element.addEventListener('touchstart', handleTouchStart, { passive: true });
-    element.addEventListener('touchmove', handleTouchMove, { passive: true });
-    element.addEventListener('touchend', handleTouchEnd, { passive: true });
+    element.addEventListener('touchstart', handleTouchStart);
+    element.addEventListener('touchmove', handleTouchMove);
+    element.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       element.removeEventListener('touchstart', handleTouchStart);

@@ -81,7 +81,7 @@ function FitnessApp() {
     onSwipeLeft: handleSwipeLeft,
     onSwipeRight: handleSwipeRight
   }, {
-    minSwipeDistance: 75,
+    minSwipeDistance: 100,
     maxSwipeTime: 400
   });
 
