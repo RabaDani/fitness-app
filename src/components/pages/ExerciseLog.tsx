@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import { Plus, Flame } from 'lucide-preact';
 import { Exercise } from '../../types';
 import { useAppContext } from '../../context/AppContext';
-import { ConfirmationModal } from '../shared';
+import { ConfirmationModal, SwipeableItem } from '../shared';
 import { ExerciseCard, AddExerciseModal } from '../features/exercises';
 import { exerciseCategoryLabels } from '../../utils/constants/ui';
 
@@ -84,11 +84,15 @@ export function ExerciseLog() {
                 <div class="space-y-2">
                   {dailyExercises.map((exercise, absoluteIndex) =>
                     exercise.category === category.id ? (
-                      <ExerciseCard
+                      <SwipeableItem
                         key={absoluteIndex}
-                        exercise={exercise}
-                        onRemove={() => removeExercise(absoluteIndex)}
-                      />
+                        onDelete={() => removeExercise(absoluteIndex)}
+                      >
+                        <ExerciseCard
+                          exercise={exercise}
+                          onRemove={() => removeExercise(absoluteIndex)}
+                        />
+                      </SwipeableItem>
                     ) : null
                   )}
                 </div>

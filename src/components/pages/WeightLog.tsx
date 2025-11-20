@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import { Plus, TrendingDown, TrendingUp, Scale } from 'lucide-preact';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAppContext } from '../../context/AppContext';
-import { ConfirmationModal } from '../shared';
+import { ConfirmationModal, SwipeableItem } from '../shared';
 import { WeightEntryCard, AddWeightModal, GoalReachedModal } from '../features/weight';
 import { BMIDisplay } from '../features/profile/BMIDisplay';
 import { calculateBMI } from '../../utils/calculations';
@@ -163,7 +163,12 @@ export function WeightLog() {
               {[...weightHistory]
                 .sort((a, b) => b.date.localeCompare(a.date))
                 .map(entry => (
-                  <WeightEntryCard key={entry.date} entry={entry} onRemove={() => removeEntry(entry.date)} />
+                  <SwipeableItem
+                    key={entry.date}
+                    onDelete={() => removeEntry(entry.date)}
+                  >
+                    <WeightEntryCard entry={entry} onRemove={() => removeEntry(entry.date)} />
+                  </SwipeableItem>
                 ))}
             </div>
           ) : (

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useState, useMemo, useCallback } from 'preact/hooks';
 import ProfileContext from './context/ProfileContext';
 import DataContext from './context/DataContext';
 import SettingsContext from './context/SettingsContext';
@@ -10,6 +10,7 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import { useDailyHistory } from './hooks/useDailyHistory';
 import { useGamification } from './hooks/useGamification';
 import { useDailyReset } from './hooks/useDailyReset';
+import { useSwipe } from './hooks/useSwipe';
 import { Profile, Meal, Food, DailyHistory, Exercise, ExerciseTemplate, WeightEntry, UserStats } from './types';
 import { initialFoodsDB, defaultUserStats } from './utils/constants/database';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -55,6 +56,34 @@ function FitnessApp() {
 
   // Automatically track gamification stats and achievements
   useGamification(dailyMeals, dailyExercises, dailyHistory, userStats, setUserStats);
+
+  // View navigation order for swipe gestures
+  const viewOrder: Array<'dashboard' | 'meals' | 'exercise' | 'weight' | 'stats' | 'profile'> =
+    ['dashboard', 'meals', 'exercise', 'weight', 'stats', 'profile'];
+
+  // Swipe navigation handlers
+  const handleSwipeLeft = useCallback(() => {
+    const currentIndex = viewOrder.indexOf(currentView);
+    if (currentIndex < viewOrder.length - 1) {
+      setCurrentView(viewOrder[currentIndex + 1]);
+    }
+  }, [currentView]);
+
+  const handleSwipeRight = useCallback(() => {
+    const currentIndex = viewOrder.indexOf(currentView);
+    if (currentIndex > 0) {
+      setCurrentView(viewOrder[currentIndex - 1]);
+    }
+  }, [currentView]);
+
+  // Attach swipe handlers to the main content area
+  const swipeRef = useSwipe<HTMLDivElement>({
+    onSwipeLeft: handleSwipeLeft,
+    onSwipeRight: handleSwipeRight
+  }, {
+    minSwipeDistance: 75,
+    maxSwipeTime: 400
+  });
 
   // Context values - memoized to prevent unnecessary re-renders
   const profileValue = useMemo(() => ({
@@ -111,7 +140,7 @@ function FitnessApp() {
           <SettingsContext.Provider value={settingsValue}>
             <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-900">
               <Navigation currentView={currentView} setCurrentView={setCurrentView} />
-              <div class="container mx-auto px-4 py-6">
+              <div ref={swipeRef} class="container mx-auto px-4 py-6 pb-24 lg:pb-6">
                 <ErrorBoundary>
                   {currentView === 'dashboard' && <Dashboard />}
                   {currentView === 'meals' && <MealsLog />}

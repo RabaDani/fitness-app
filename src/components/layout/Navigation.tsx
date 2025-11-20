@@ -1,7 +1,6 @@
 import { h } from 'preact';
-import { User, TrendingUp, House, Activity, Scale, Salad, Menu, X } from 'lucide-preact';
+import { User, TrendingUp, House, Activity, Scale, Salad } from 'lucide-preact';
 import { ThemeToggle } from '../shared';
-import { useState } from 'preact/compat';
 
 interface NavigationProps {
   currentView: 'dashboard' | 'meals' | 'stats' | 'profile' | 'exercise' | 'weight';
@@ -10,7 +9,8 @@ interface NavigationProps {
 
 /**
  * Navigation component for switching between different views
- * Provides a tabbed interface for the main app sections with dark mode toggle
+ * Desktop: Top bar with icons and labels
+ * Mobile: Bottom bar with icons only
  * @param currentView - Currently active view
  * @param setCurrentView - Function to change the current view
  */
@@ -27,80 +27,83 @@ export function Navigation({
     { id: 'profile' as const, label: 'Profil', icon: User }
   ];
 
-  const [open, setOpen] = useState(false);
-
   return (
-    <nav class="bg-white dark:bg-gray-800 shadow-md">
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center">
-          {/* App Logo/Brand + Mobile Hamburger */}
-          <div class="flex items-center space-x-2 py-4 mr-8">
-            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              TheBestOfYou
-            </h1>
-            <button
-              class="lg:hidden p-2 rounded-lg transition-colors bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-              aria-controls="mobile-nav"
-              aria-expanded={open}
-              onClick={() => setOpen(prev => !prev)}
-            >
-              {open ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
+    <>
+      {/* Desktop Navigation - Top */}
+      <nav class="hidden lg:block bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center">
+            {/* App Logo/Brand */}
+            <div class="flex items-center space-x-2 py-4 mr-8">
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="TheBestOfYou Logo" class="w-8 h-8" />
+              <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                TheBestOfYou
+              </h1>
+            </div>
 
-          {/* Navigation Items */}
-          <div class="hidden lg:flex space-x-1 flex-1">
-            {navItems.map(item => {
-              const Icon = item.icon;
-              const isActive = currentView === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id)}
-                  class={`flex items-center space-x-2 px-6 py-4 font-medium transition-colors ${isActive
-                    ? 'border-b-4 border-indigo-600 text-indigo-600'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
-                    }`}
-                >
-                  {Icon && <Icon size={20} />}
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Theme Toggle */}
-          <ThemeToggle />
-        </div>
-
-        {/* Mobile dropdown (visible when open) */}
-        {open && (
-          <div id="mobile-nav" class="lg:hidden mt-2 pb-4 bg-white dark:bg-gray-800">
-            <nav class="flex flex-col">
+            {/* Navigation Items */}
+            <div class="flex space-x-1 flex-1">
               {navItems.map(item => {
                 const Icon = item.icon;
                 const isActive = currentView === item.id;
                 return (
                   <button
                     key={item.id}
-                    onClick={() => {
-                      setCurrentView(item.id);
-                      setOpen(false);
-                    }}
+                    onClick={() => setCurrentView(item.id)}
                     class={`flex items-center space-x-2 px-6 py-4 font-medium transition-colors ${isActive
-                    ? 'border-b-4 border-indigo-600 text-indigo-600'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
-                    }`}
+                      ? 'border-b-4 border-indigo-600 text-indigo-600'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+                      }`}
                   >
-                    {Icon && <Icon size={18} />}
+                    {Icon && <Icon size={20} />}
                     <span>{item.label}</span>
                   </button>
                 );
               })}
-            </nav>
+            </div>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
           </div>
-        )}
+        </div>
+      </nav>
+
+      {/* Mobile Navigation - Bottom */}
+      <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 safe-area-inset-bottom">
+        <div class="flex justify-around items-center px-2 py-2">
+          {navItems.map(item => {
+            const Icon = item.icon;
+            const isActive = currentView === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setCurrentView(item.id)}
+                class={`flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-all min-w-[60px] ${isActive
+                  ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400'
+                  }`}
+                aria-label={item.label}
+              >
+                {Icon && <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />}
+                <span class="text-[10px] mt-1 font-medium">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* Mobile Header - Top (Logo and Theme Toggle) */}
+      <div class="lg:hidden bg-white dark:bg-gray-800 shadow-md sticky top-0 z-40">
+        <div class="flex justify-between items-center px-4 py-3">
+          <div class="flex items-center space-x-2">
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="TheBestOfYou Logo" class="w-7 h-7" />
+            <h1 class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+              TheBestOfYou
+            </h1>
+          </div>
+          <ThemeToggle />
+        </div>
       </div>
-    </nav>
+    </>
   );
 }

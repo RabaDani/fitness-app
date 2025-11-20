@@ -4,7 +4,7 @@ import { Plus } from 'lucide-preact';
 import { Meal } from '../../types';
 import { useAppContext } from '../../context/AppContext';
 import { MealCard, FoodSearchModal } from '../features/meals';
-import { ConfirmationModal } from '../shared';
+import { ConfirmationModal, SwipeableItem } from '../shared';
 import { mealTypeLabels } from '../../utils/constants/ui';
 
 /**
@@ -65,11 +65,15 @@ export function MealsLog() {
                 <div class="space-y-2">
                   {dailyMeals.map((meal, absoluteIndex) =>
                     meal.mealType === type.id ? (
-                      <MealCard
+                      <SwipeableItem
                         key={absoluteIndex}
-                        meal={meal}
-                        onRemove={() => removeMeal(absoluteIndex)}
-                      />
+                        onDelete={() => removeMeal(absoluteIndex)}
+                      >
+                        <MealCard
+                          meal={meal}
+                          onRemove={() => removeMeal(absoluteIndex)}
+                        />
+                      </SwipeableItem>
                     ) : null
                   )}
                 </div>
