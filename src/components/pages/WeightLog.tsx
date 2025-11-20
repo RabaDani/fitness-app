@@ -40,11 +40,19 @@ export function WeightLog() {
   const goalBMI = calculateBMI(targetWeight, profile.height);
 
   /**
-   * Show confirmation modal for weight entry deletion
+   * Show confirmation modal for weight entry deletion (desktop)
    * @param date - Date of entry to remove
    */
   const removeEntry = (date: string): void => {
     setEntryToDelete(date);
+  };
+
+  /**
+   * Delete weight entry directly without confirmation (mobile swipe)
+   * @param date - Date of entry to remove
+   */
+  const deleteEntryDirectly = (date: string): void => {
+    setWeightHistory(weightHistory.filter(e => e.date !== date));
   };
 
   /**
@@ -165,7 +173,7 @@ export function WeightLog() {
                 .map(entry => (
                   <SwipeableItem
                     key={entry.date}
-                    onDelete={() => removeEntry(entry.date)}
+                    onDelete={() => deleteEntryDirectly(entry.date)}
                   >
                     <WeightEntryCard entry={entry} onRemove={() => removeEntry(entry.date)} />
                   </SwipeableItem>

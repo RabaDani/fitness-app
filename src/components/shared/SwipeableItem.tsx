@@ -10,9 +10,9 @@ interface SwipeableItemProps {
 
 /**
  * Swipeable item component for swipe-to-delete functionality
- * Swipe left to reveal delete button, swipe right to cancel
+ * Swipe left to directly delete (no confirmation on mobile)
  * @param children - The content to wrap
- * @param onDelete - Callback when delete is confirmed
+ * @param onDelete - Callback for direct deletion (no confirmation)
  * @param disabled - If true, swiping is disabled
  */
 export function SwipeableItem({ children, onDelete, disabled = false }: SwipeableItemProps) {
@@ -22,8 +22,8 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
   const startX = useRef(0);
   const currentX = useRef(0);
 
-  const deleteButtonWidth = 80;
-  const swipeThreshold = 60;
+  const deleteButtonWidth = 150;
+  const swipeThreshold = 70;
 
   useEffect(() => {
     const element = elementRef.current;
@@ -87,8 +87,8 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
   return (
     <div class="relative overflow-hidden">
       {/* Red background indicator when swiping */}
-      <div class="absolute right-0 top-0 bottom-0 w-20 flex items-center justify-end bg-red-500 dark:bg-red-600">
-        <Trash2 size={20} class="mr-6 text-white" />
+      <div class="absolute right-0 top-0 bottom-0 w-full flex items-center justify-end bg-red-500 dark:bg-red-600 px-8">
+        <Trash2 size={20} class="text-white" />
       </div>
 
       {/* Swipeable content */}

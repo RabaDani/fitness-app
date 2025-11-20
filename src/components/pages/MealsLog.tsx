@@ -25,11 +25,19 @@ export function MealsLog() {
   ];
 
   /**
-   * Show confirmation modal for meal deletion
+   * Show confirmation modal for meal deletion (desktop)
    * @param index - Index of meal to remove
    */
   const removeMeal = (index: number): void => {
     setMealToDelete(index);
+  };
+
+  /**
+   * Delete meal directly without confirmation (mobile swipe)
+   * @param index - Index of meal to remove
+   */
+  const deleteMealDirectly = (index: number): void => {
+    setDailyMeals(dailyMeals.filter((_, i) => i !== index));
   };
 
   /**
@@ -67,7 +75,7 @@ export function MealsLog() {
                     meal.mealType === type.id ? (
                       <SwipeableItem
                         key={absoluteIndex}
-                        onDelete={() => removeMeal(absoluteIndex)}
+                        onDelete={() => deleteMealDirectly(absoluteIndex)}
                       >
                         <MealCard
                           meal={meal}

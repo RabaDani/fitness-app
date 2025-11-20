@@ -24,11 +24,19 @@ export function ExerciseLog() {
   );
 
   /**
-   * Show confirmation modal for exercise deletion
+   * Show confirmation modal for exercise deletion (desktop)
    * @param index - Index of exercise to remove
    */
   const removeExercise = (index: number): void => {
     setExerciseToDelete(index);
+  };
+
+  /**
+   * Delete exercise directly without confirmation (mobile swipe)
+   * @param index - Index of exercise to remove
+   */
+  const deleteExerciseDirectly = (index: number): void => {
+    setDailyExercises(dailyExercises.filter((_, i) => i !== index));
   };
 
   /**
@@ -86,7 +94,7 @@ export function ExerciseLog() {
                     exercise.category === category.id ? (
                       <SwipeableItem
                         key={absoluteIndex}
-                        onDelete={() => removeExercise(absoluteIndex)}
+                        onDelete={() => deleteExerciseDirectly(absoluteIndex)}
                       >
                         <ExerciseCard
                           exercise={exercise}
