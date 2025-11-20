@@ -142,12 +142,14 @@ function FitnessApp() {
               <Navigation currentView={currentView} setCurrentView={setCurrentView} />
               <div ref={swipeRef} class="container mx-auto px-4 py-6 pb-24 lg:pb-6">
                 <ErrorBoundary>
-                  {currentView === 'dashboard' && <Dashboard />}
-                  {currentView === 'meals' && <MealsLog />}
-                  {currentView === 'exercise' && <ExerciseLog />}
-                  {currentView === 'weight' && <WeightLog />}
-                  {currentView === 'stats' && <Statistics />}
-                  {currentView === 'profile' && <ProfileView />}
+                  <div key={currentView} class="animate-fadeIn">
+                    {currentView === 'dashboard' && <Dashboard />}
+                    {currentView === 'meals' && <MealsLog />}
+                    {currentView === 'exercise' && <ExerciseLog />}
+                    {currentView === 'weight' && <WeightLog />}
+                    {currentView === 'stats' && <Statistics />}
+                    {currentView === 'profile' && <ProfileView />}
+                  </div>
                 </ErrorBoundary>
               </div>
             </div>

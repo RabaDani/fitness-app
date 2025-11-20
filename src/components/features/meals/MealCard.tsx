@@ -46,7 +46,7 @@ export function MealCard({ meal, onRemove }: MealCardProps) {
           </p>
           <p class="text-secondary text-xs">kcal</p>
         </div>
-        <button onClick={onRemove} class="btn-icon-danger">
+        <button onClick={onRemove} class="btn-icon-danger hidden lg:flex">
           <Trash2 size={20} />
         </button>
       </div>

@@ -33,7 +33,7 @@ export function WeightEntryCard({ entry, onRemove }: WeightEntryCardProps) {
           <p class="text-accent text-2xl font-bold">{entry.weight}</p>
           <p class="text-secondary text-xs">kg</p>
         </div>
-        <button onClick={onRemove} class="btn-icon-danger">
+        <button onClick={onRemove} class="btn-icon-danger hidden lg:flex">
           <Trash2 size={20} />
         </button>
       </div>

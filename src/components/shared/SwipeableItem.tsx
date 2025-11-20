@@ -18,7 +18,6 @@ interface SwipeableItemProps {
 export function SwipeableItem({ children, onDelete, disabled = false }: SwipeableItemProps) {
   const [translateX, setTranslateX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
   const currentX = useRef(0);
@@ -52,13 +51,11 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
       setIsSwiping(false);
 
       if (translateX < -swipeThreshold) {
-        // Swiped enough to show delete
-        setTranslateX(-deleteButtonWidth);
-        setShowDelete(true);
+        // Swiped enough - trigger delete immediately
+        handleDelete();
       } else {
         // Not swiped enough, reset
         setTranslateX(0);
-        setShowDelete(false);
       }
     };
 
@@ -81,26 +78,12 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
     }, 200);
   };
 
-  const handleCancel = () => {
-    setTranslateX(0);
-    setShowDelete(false);
-  };
-
   return (
     <div class="relative overflow-hidden">
-      {/* Delete button background */}
-      {showDelete && (
-        <div class="absolute right-0 top-0 bottom-0 flex items-center justify-end bg-red-500 dark:bg-red-600">
-          <button
-            onClick={handleDelete}
-            class="h-full px-6 text-white flex items-center justify-center hover:bg-red-600 dark:hover:bg-red-700 transition-colors"
-            style={{ width: `${deleteButtonWidth}px` }}
-            aria-label="Delete"
-          >
-            <Trash2 size={20} />
-          </button>
-        </div>
-      )}
+      {/* Red background indicator when swiping */}
+      <div class="absolute right-0 top-0 bottom-0 w-20 flex items-center justify-end bg-red-500 dark:bg-red-600">
+        <Trash2 size={20} class="mr-6 text-white" />
+      </div>
 
       {/* Swipeable content */}
       <div
@@ -112,15 +95,6 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
         }}
       >
         {children}
-
-        {/* Tap outside to cancel when delete is showing */}
-        {showDelete && (
-          <div
-            class="absolute inset-0 z-10"
-            onClick={handleCancel}
-            onTouchStart={handleCancel}
-          />
-        )}
       </div>
     </div>
   );
