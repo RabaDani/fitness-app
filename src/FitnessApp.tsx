@@ -61,27 +61,33 @@ function FitnessApp() {
   const viewOrder: Array<'dashboard' | 'meals' | 'exercise' | 'weight' | 'stats' | 'profile'> =
     ['dashboard', 'meals', 'exercise', 'weight', 'stats', 'profile'];
 
-  // Swipe navigation handlers
+  // Swipe navigation handlers with functional state updates
   const handleSwipeLeft = useCallback(() => {
-    const currentIndex = viewOrder.indexOf(currentView);
-    if (currentIndex < viewOrder.length - 1) {
-      setCurrentView(viewOrder[currentIndex + 1]);
-    }
-  }, [currentView]);
+    setCurrentView(prevView => {
+      const currentIndex = viewOrder.indexOf(prevView);
+      if (currentIndex < viewOrder.length - 1) {
+        return viewOrder[currentIndex + 1];
+      }
+      return prevView;
+    });
+  }, []);
 
   const handleSwipeRight = useCallback(() => {
-    const currentIndex = viewOrder.indexOf(currentView);
-    if (currentIndex > 0) {
-      setCurrentView(viewOrder[currentIndex - 1]);
-    }
-  }, [currentView]);
+    setCurrentView(prevView => {
+      const currentIndex = viewOrder.indexOf(prevView);
+      if (currentIndex > 0) {
+        return viewOrder[currentIndex - 1];
+      }
+      return prevView;
+    });
+  }, []);
 
   // Attach swipe handlers to the main content area
   const swipeRef = useSwipe<HTMLDivElement>({
     onSwipeLeft: handleSwipeLeft,
     onSwipeRight: handleSwipeRight
   }, {
-    minSwipeDistance: 100,
+    minSwipeDistance: 60,
     maxSwipeTime: 400
   });
 

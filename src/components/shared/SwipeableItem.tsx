@@ -23,7 +23,7 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
   const currentX = useRef(0);
 
   const deleteButtonWidth = 150;
-  const swipeThreshold = 70;
+  const swipeThreshold = 80;
 
   useEffect(() => {
     const element = elementRef.current;
