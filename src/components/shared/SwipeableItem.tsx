@@ -24,6 +24,7 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
 
   const deleteButtonWidth = 150;
   const swipeThreshold = 80;
+  const hapticTriggered = useRef(false);
 
   useEffect(() => {
     const element = elementRef.current;
@@ -46,6 +47,17 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
       // Only allow swiping left (negative values)
       if (newTranslateX <= 0 && newTranslateX >= -deleteButtonWidth) {
         setTranslateX(newTranslateX);
+
+        // Trigger haptic feedback when crossing threshold
+        if (newTranslateX < -swipeThreshold && !hapticTriggered.current) {
+          if (navigator.vibrate) {
+            navigator.vibrate(50);
+          }
+          hapticTriggered.current = true;
+        } else if (newTranslateX >= -swipeThreshold && hapticTriggered.current) {
+          hapticTriggered.current = false;
+        }
+
         // Prevent parent swipe handlers from triggering
         e.stopPropagation();
       }
@@ -53,6 +65,7 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
 
     const handleTouchEnd = (e: TouchEvent) => {
       setIsSwiping(false);
+      hapticTriggered.current = false;
 
       if (translateX < -swipeThreshold) {
         // Swiped enough - trigger delete immediately
@@ -77,6 +90,11 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
   }, [isSwiping, translateX, disabled]);
 
   const handleDelete = () => {
+    // Haptic feedback on delete
+    if (navigator.vibrate) {
+      navigator.vibrate([30, 10, 30]); // Double pulse for deletion
+    }
+
     // Animate out before deleting
     setTranslateX(-300);
     setTimeout(() => {

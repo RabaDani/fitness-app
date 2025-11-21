@@ -69,7 +69,7 @@ export function Navigation({
       </nav>
 
       {/* Mobile Navigation - Bottom */}
-      <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 safe-area-inset-bottom rounded-lg opacity-75">
+      <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 z-50 safe-area-inset-bottom rounded-t-2xl shadow-lg ">
         <div class="flex justify-around items-center px-2 py-2">
           {navItems.map(item => {
             const Icon = item.icon;
@@ -93,7 +93,7 @@ export function Navigation({
       </nav>
 
       {/* Mobile Header - Top (Logo and Theme Toggle) */}
-      <div class="lg:hidden bg-white dark:bg-gray-800 shadow-md sticky top-0 z-40">
+      <div class="lg:hidden bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl shadow-md sticky top-0 z-40 border-b border-gray-200/50 dark:border-gray-700/50">
         <div class="flex justify-between items-center px-4 py-3">
           <div class="flex items-center space-x-2">
             <img src={`${import.meta.env.BASE_URL}logo.png`} alt="TheBestOfYou Logo" class="w-7 h-7" />

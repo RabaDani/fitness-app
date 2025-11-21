@@ -102,6 +102,14 @@ html {
 	.card {
 		@apply rounded-lg shadow-md p-6;
 		@apply bg-white dark:bg-gray-800;
+		@apply transition-all duration-200;
+	}
+
+	@media (min-width: 1024px) {
+		.card:hover {
+			@apply shadow-xl;
+			transform: translateY(-2px);
+		}
 	}
 
 	.card-secondary {
@@ -112,6 +120,14 @@ html {
 	.card-compact {
 		@apply rounded-lg shadow-md p-4;
 		@apply bg-white dark:bg-gray-800;
+		@apply transition-all duration-200;
+	}
+
+	@media (min-width: 1024px) {
+		.card-compact:hover {
+			@apply shadow-xl;
+			transform: translateY(-2px);
+		}
 	}
 
 	.card-list-item {
@@ -330,6 +346,10 @@ html {
 	.animate-fadeIn {
 		animation: fadeIn 0.25s ease-in-out;
 	}
+
+	.animate-slideIn {
+		animation: slideIn 0.3s ease-out;
+	}
 }
 
 /* Keyframes for animations */
@@ -337,6 +357,17 @@ html {
 	from {
 		opacity: 0;
 		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-20px);
 	}
 	to {
 		opacity: 1;

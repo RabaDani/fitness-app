@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { WeightEntry } from '../../../types';
 import { useAppContext } from '../../../context/AppContext';
+import { useToastContext } from '../../../hooks/useToastContext';
 import { getTodayString } from '../../../utils/dateHelpers';
 import { ModalWrapper, ModalHeader, ModalFooter } from '../../shared';
 
@@ -17,6 +18,7 @@ interface AddWeightModalProps {
  */
 export function AddWeightModal({ onClose, onGoalReached }: AddWeightModalProps) {
   const { weightHistory, setWeightHistory, profile, darkMode } = useAppContext();
+  const { showSuccess } = useToastContext();
   const today = getTodayString();
 
   // Get the latest weight measurement to pre-fill
@@ -42,6 +44,7 @@ export function AddWeightModal({ onClose, onGoalReached }: AddWeightModalProps) 
 
     // Remove existing entry for the same date if exists
     const updatedHistory = weightHistory.filter(entry => entry.date !== date);
+    const isUpdating = weightHistory.some(entry => entry.date === date);
     setWeightHistory([...updatedHistory, newEntry]);
 
     // Check if goal is reached (only for lose/gain, not maintain)
@@ -52,6 +55,7 @@ export function AddWeightModal({ onClose, onGoalReached }: AddWeightModalProps) 
       goalReached = weight >= profile.goalWeight;
     }
 
+    showSuccess(isUpdating ? 'Súly frissítve' : 'Súly rögzítve');
     onClose();
 
     if (goalReached) {

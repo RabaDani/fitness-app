@@ -3,6 +3,7 @@ import { useState, useMemo } from 'preact/hooks';
 import { ListCheck, Plus } from 'lucide-preact';
 import { Exercise } from '../../../types';
 import { useAppContext } from '../../../context/AppContext';
+import { useToastContext } from '../../../hooks/useToastContext';
 import { exerciseDatabase } from '../../../utils/constants/database';
 import { exerciseCategoryLabels } from '../../../utils/constants/ui';
 import { calculateTotalCaloriesBurned, calculatePercentage } from '../../../utils/calculations';
@@ -30,6 +31,7 @@ export function AddExerciseModal({
   setCustomExercises
 }: AddExerciseModalProps) {
   const { dailyExercises, setDailyExercises, profile } = useAppContext();
+  const { showSuccess } = useToastContext();
   const [selectedExercise, setSelectedExercise] = useState<typeof exerciseDatabase[0] | null>(null);
   const [duration, setDuration] = useState(30);
   const [isCreatingCustom, setIsCreatingCustom] = useState(false);
@@ -70,6 +72,7 @@ export function AddExerciseModal({
     setIsCreatingCustom(false);
     setCustomName('');
     setCustomCaloriesPerMinute(5);
+    showSuccess(`${newCustomExercise.name} létrehozva`);
   };
 
   /**
@@ -91,6 +94,7 @@ export function AddExerciseModal({
     };
 
     setDailyExercises([...dailyExercises, newExercise]);
+    showSuccess(`${selectedExercise.name} hozzáadva`);
     onClose();
   };
 

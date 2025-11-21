@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks';
 import { Plus } from 'lucide-preact';
 import { Meal } from '../../types';
 import { useAppContext } from '../../context/AppContext';
+import { useToastContext } from '../../hooks/useToastContext';
 import { MealCard, FoodSearchModal } from '../features/meals';
 import { ConfirmationModal, SwipeableItem } from '../shared';
 import { mealTypeLabels } from '../../utils/constants/ui';
@@ -13,6 +14,7 @@ import { mealTypeLabels } from '../../utils/constants/ui';
  */
 export function MealsLog() {
   const { dailyMeals, setDailyMeals } = useAppContext();
+  const { showSuccess } = useToastContext();
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedMealType, setSelectedMealType] = useState<Meal['mealType']>('breakfast');
   const [mealToDelete, setMealToDelete] = useState<number | null>(null);
@@ -37,7 +39,9 @@ export function MealsLog() {
    * @param index - Index of meal to remove
    */
   const deleteMealDirectly = (index: number): void => {
+    const mealName = dailyMeals[index].name;
     setDailyMeals(dailyMeals.filter((_, i) => i !== index));
+    showSuccess(`${mealName} törölve`);
   };
 
   /**
@@ -45,8 +49,10 @@ export function MealsLog() {
    */
   const confirmDelete = (): void => {
     if (mealToDelete !== null) {
+      const mealName = dailyMeals[mealToDelete].name;
       setDailyMeals(dailyMeals.filter((_, i) => i !== mealToDelete));
       setMealToDelete(null);
+      showSuccess(`${mealName} törölve`);
     }
   };
 
@@ -56,7 +62,7 @@ export function MealsLog() {
         <h1 class="heading-1">Étkezések</h1>
         <button
           onClick={() => setShowAddModal(true)}
-          class="btn-primary flex items-center space-x-2"
+          class="btn-primary hidden lg:flex items-center space-x-2"
         >
           <Plus size={20} />
           <span>Étel hozzáadása</span>
@@ -102,6 +108,15 @@ export function MealsLog() {
           );
         })}
       </div>
+
+      {/* Floating Action Button - Mobile only */}
+      <button
+        onClick={() => setShowAddModal(true)}
+        class="lg:hidden fixed bottom-20 right-4 w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
+        aria-label="Étel hozzáadása"
+      >
+        <Plus size={20} class="text-white" strokeWidth={2.5} />
+      </button>
 
       {showAddModal && (
         <FoodSearchModal

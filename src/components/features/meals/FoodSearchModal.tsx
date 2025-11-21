@@ -3,6 +3,7 @@ import { useState, useRef } from 'preact/hooks';
 import { Search, Heart } from 'lucide-preact';
 import { Food, Meal } from '../../../types';
 import { useAppContext } from '../../../context/AppContext';
+import { useToastContext } from '../../../hooks/useToastContext';
 import { SelectedFoodDetails } from './SelectedFoodDetails';
 import { FoodSearchTab } from './FoodSearchTab';
 import { FavoritesFoodTab } from './FavoritesFoodTab';
@@ -25,6 +26,7 @@ export function FoodSearchModal({
   setMealType
 }: FoodSearchModalProps) {
   const { foodsDB, setFoodsDB, dailyMeals, setDailyMeals, favorites, setFavorites } = useAppContext();
+  const { showSuccess } = useToastContext();
   const [activeTab, setActiveTab] = useState<'search' | 'favorites'>('search');
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [amount, setAmount] = useState(100);
@@ -60,6 +62,7 @@ export function FoodSearchModal({
     };
 
     setDailyMeals([...dailyMeals, newMeal]);
+    showSuccess(`${selectedFood.name} hozzáadva`);
     onClose();
   };
 
@@ -72,8 +75,10 @@ export function FoodSearchModal({
 
     if (isFavorite) {
       setFavorites(favorites.filter(f => f.id !== food.id));
+      showSuccess(`${food.name} eltávolítva a kedvencekből`);
     } else {
       setFavorites([...favorites, food]);
+      showSuccess(`${food.name} hozzáadva a kedvencekhez`);
     }
   };
 

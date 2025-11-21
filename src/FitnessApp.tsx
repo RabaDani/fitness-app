@@ -2,15 +2,17 @@ import { useState, useMemo, useCallback } from 'preact/hooks';
 import ProfileContext from './context/ProfileContext';
 import DataContext from './context/DataContext';
 import SettingsContext from './context/SettingsContext';
+import ToastContext from './context/ToastContext';
 import { Navigation } from './components/layout';
 import { Dashboard, Statistics, ProfileView, MealsLog, ExerciseLog, WeightLog } from './components/pages';
 import { ProfileSetup } from './components/features/profile';
-import { ErrorBoundary } from './components/shared';
+import { ErrorBoundary, ToastContainer } from './components/shared';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useDailyHistory } from './hooks/useDailyHistory';
 import { useGamification } from './hooks/useGamification';
 import { useDailyReset } from './hooks/useDailyReset';
 import { useSwipe } from './hooks/useSwipe';
+import { useToast } from './hooks/useToast';
 import { Profile, Meal, Food, DailyHistory, Exercise, ExerciseTemplate, WeightEntry, UserStats } from './types';
 import { initialFoodsDB, defaultUserStats } from './utils/constants/database';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -28,6 +30,9 @@ import { useDarkMode } from './hooks/useDarkMode';
 function FitnessApp() {
   // View state
   const [currentView, setCurrentView] = useState<'dashboard' | 'meals' | 'stats' | 'profile' | 'exercise' | 'weight'>('dashboard');
+
+  // Toast notifications
+  const { toasts, removeToast, showSuccess, showError } = useToast();
 
   // Profile Context State
   const [profile, setProfile] = useLocalStorage<Profile | null>('fitnessProfile', null);
@@ -121,19 +126,26 @@ function FitnessApp() {
     setCustomExercises
   }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises]);
 
+  const toastValue = useMemo(() => ({
+    showSuccess,
+    showError
+  }), [showSuccess, showError]);
+
   // Show profile setup if no profile exists
   if (!profile) {
     return (
       <ErrorBoundary>
-        <ProfileContext.Provider value={profileValue}>
-          <DataContext.Provider value={dataValue}>
-            <SettingsContext.Provider value={settingsValue}>
-              <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-900">
-                <ProfileSetup />
-              </div>
-            </SettingsContext.Provider>
-          </DataContext.Provider>
-        </ProfileContext.Provider>
+        <ToastContext.Provider value={toastValue}>
+          <ProfileContext.Provider value={profileValue}>
+            <DataContext.Provider value={dataValue}>
+              <SettingsContext.Provider value={settingsValue}>
+                <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-900">
+                  <ProfileSetup />
+                </div>
+              </SettingsContext.Provider>
+            </DataContext.Provider>
+          </ProfileContext.Provider>
+        </ToastContext.Provider>
       </ErrorBoundary>
     );
   }
@@ -141,27 +153,30 @@ function FitnessApp() {
   // Main app with navigation
   return (
     <ErrorBoundary>
-      <ProfileContext.Provider value={profileValue}>
-        <DataContext.Provider value={dataValue}>
-          <SettingsContext.Provider value={settingsValue}>
-            <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-900">
-              <Navigation currentView={currentView} setCurrentView={setCurrentView} />
-              <div ref={swipeRef} class="container mx-auto px-4 py-6 pb-24 lg:pb-6">
-                <ErrorBoundary>
-                  <div key={currentView} class="animate-fadeIn">
-                    {currentView === 'dashboard' && <Dashboard />}
-                    {currentView === 'meals' && <MealsLog />}
-                    {currentView === 'exercise' && <ExerciseLog />}
-                    {currentView === 'weight' && <WeightLog />}
-                    {currentView === 'stats' && <Statistics />}
-                    {currentView === 'profile' && <ProfileView />}
-                  </div>
-                </ErrorBoundary>
+      <ToastContext.Provider value={toastValue}>
+        <ProfileContext.Provider value={profileValue}>
+          <DataContext.Provider value={dataValue}>
+            <SettingsContext.Provider value={settingsValue}>
+              <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-900">
+                <Navigation currentView={currentView} setCurrentView={setCurrentView} />
+                <div ref={swipeRef} class="container mx-auto px-4 py-6 pb-24 lg:pb-6">
+                  <ErrorBoundary>
+                    <div key={currentView} class="animate-fadeIn">
+                      {currentView === 'dashboard' && <Dashboard />}
+                      {currentView === 'meals' && <MealsLog />}
+                      {currentView === 'exercise' && <ExerciseLog />}
+                      {currentView === 'weight' && <WeightLog />}
+                      {currentView === 'stats' && <Statistics />}
+                      {currentView === 'profile' && <ProfileView />}
+                    </div>
+                  </ErrorBoundary>
+                </div>
+                <ToastContainer toasts={toasts} onRemove={removeToast} />
               </div>
-            </div>
-          </SettingsContext.Provider>
-        </DataContext.Provider>
-      </ProfileContext.Provider>
+            </SettingsContext.Provider>
+          </DataContext.Provider>
+        </ProfileContext.Provider>
+      </ToastContext.Provider>
     </ErrorBoundary>
   );
 }

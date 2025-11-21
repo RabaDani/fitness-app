@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks';
 import { Plus, TrendingDown, TrendingUp, Scale } from 'lucide-preact';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAppContext } from '../../context/AppContext';
+import { useToastContext } from '../../hooks/useToastContext';
 import { ConfirmationModal, SwipeableItem } from '../shared';
 import { WeightEntryCard, AddWeightModal, GoalReachedModal } from '../features/weight';
 import { BMIDisplay } from '../features/profile/BMIDisplay';
@@ -15,6 +16,7 @@ import { getChartColors } from '../../utils/chartColors';
  */
 export function WeightLog() {
   const { weightHistory, setWeightHistory, profile } = useAppContext();
+  const { showSuccess } = useToastContext();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showGoalReachedModal, setShowGoalReachedModal] = useState(false);
   const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
@@ -52,7 +54,11 @@ export function WeightLog() {
    * @param date - Date of entry to remove
    */
   const deleteEntryDirectly = (date: string): void => {
+    const entry = weightHistory.find(e => e.date === date);
     setWeightHistory(weightHistory.filter(e => e.date !== date));
+    if (entry) {
+      showSuccess('Súlymérés törölve');
+    }
   };
 
   /**
@@ -62,6 +68,7 @@ export function WeightLog() {
     if (entryToDelete) {
       setWeightHistory(weightHistory.filter(e => e.date !== entryToDelete));
       setEntryToDelete(null);
+      showSuccess('Súlymérés törölve');
     }
   };
 
@@ -71,7 +78,7 @@ export function WeightLog() {
         <h1 class="heading-1">Súly Követés</h1>
         <button
           onClick={() => setShowAddModal(true)}
-          class="btn-primary flex items-center space-x-2"
+          class="btn-primary hidden lg:flex items-center space-x-2"
         >
           <Plus size={20} />
           <span>Súly rögzítése</span>
@@ -198,6 +205,15 @@ export function WeightLog() {
           )}
         </div>
       </div>
+
+      {/* Floating Action Button - Mobile only */}
+      <button
+        onClick={() => setShowAddModal(true)}
+        class="lg:hidden fixed bottom-20 right-4 w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
+        aria-label="Súly rögzítése"
+      >
+        <Plus size={20} class="text-white" strokeWidth={2.5} />
+      </button>
 
       {showAddModal && (
         <AddWeightModal

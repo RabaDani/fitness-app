@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { User } from 'lucide-preact';
 import { Profile } from '../../../types';
 import { useAppContext } from '../../../context/AppContext';
+import { useToastContext } from '../../../hooks/useToastContext';
 import { activityLabels, goalLabels } from '../../../utils/constants/ui';
 import { BMIDisplay } from './BMIDisplay';
 import { CaloriePreview } from './CaloriePreview';
@@ -20,6 +21,7 @@ interface EditProfileModalProps {
  */
 export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
   const { setProfile } = useAppContext();
+  const { showSuccess } = useToastContext();
 
   // Use universal hook for all form logic
   const {
@@ -36,6 +38,7 @@ export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
     initialData: profile,
     onSubmit: (updatedProfile: Profile) => {
       setProfile(updatedProfile);
+      showSuccess('Profil frissítve');
       onClose();
     },
     trackChanges: true,

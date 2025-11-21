@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks';
 import { Plus, Flame } from 'lucide-preact';
 import { Exercise } from '../../types';
 import { useAppContext } from '../../context/AppContext';
+import { useToastContext } from '../../hooks/useToastContext';
 import { ConfirmationModal, SwipeableItem } from '../shared';
 import { ExerciseCard, AddExerciseModal } from '../features/exercises';
 import { exerciseCategoryLabels } from '../../utils/constants/ui';
@@ -13,6 +14,7 @@ import { exerciseCategoryLabels } from '../../utils/constants/ui';
  */
 export function ExerciseLog() {
   const { dailyExercises, setDailyExercises, customExercises, setCustomExercises } = useAppContext();
+  const { showSuccess } = useToastContext();
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Exercise['category']>('cardio');
   const [exerciseToDelete, setExerciseToDelete] = useState<number | null>(null);
@@ -36,7 +38,9 @@ export function ExerciseLog() {
    * @param index - Index of exercise to remove
    */
   const deleteExerciseDirectly = (index: number): void => {
+    const exerciseName = dailyExercises[index].name;
     setDailyExercises(dailyExercises.filter((_, i) => i !== index));
+    showSuccess(`${exerciseName} törölve`);
   };
 
   /**
@@ -44,8 +48,10 @@ export function ExerciseLog() {
    */
   const confirmDelete = (): void => {
     if (exerciseToDelete !== null) {
+      const exerciseName = dailyExercises[exerciseToDelete].name;
       setDailyExercises(dailyExercises.filter((_, i) => i !== exerciseToDelete));
       setExerciseToDelete(null);
+      showSuccess(`${exerciseName} törölve`);
     }
   };
 
@@ -62,7 +68,7 @@ export function ExerciseLog() {
         <h1 class="heading-1">Edzésnapló</h1>
         <button
           onClick={() => setShowAddModal(true)}
-          class="btn-primary flex items-center space-x-2"
+          class="btn-primary hidden lg:flex items-center space-x-2"
         >
           <Plus size={20} />
           <span>Edzés hozzáadása</span>
@@ -124,6 +130,15 @@ export function ExerciseLog() {
           );
         })}
       </div>
+
+      {/* Floating Action Button - Mobile only */}
+      <button
+        onClick={() => setShowAddModal(true)}
+        class="lg:hidden fixed bottom-20 right-4 w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
+        aria-label="Edzés hozzáadása"
+      >
+        <Plus size={20} class="text-white" strokeWidth={2.5} />
+      </button>
 
       {showAddModal && (
         <AddExerciseModal

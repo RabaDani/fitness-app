@@ -8,3 +8,5 @@ export * from './ModalHeader';
 export * from './ModalFooter';
 export * from './InfoNote';
 export * from './SwipeableItem';
+export * from './Toast';
+export * from './ToastContainer';
