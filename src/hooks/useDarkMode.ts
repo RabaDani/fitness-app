@@ -12,12 +12,12 @@ export function useDarkMode(darkMode: boolean) {
     // Then add if darkMode is true
     if (darkMode === true) {
       document.documentElement.classList.add('dark');
-      // Dark mode: dark gray status bar
+      // Dark mode: gray-800 
       if (metaThemeColor) {
         metaThemeColor.setAttribute('content', '#1f2937');
       }
     } else {
-      // Light mode: white status bar
+      // Light mode: white 
       if (metaThemeColor) {
         metaThemeColor.setAttribute('content', '#ffffff');
       }
