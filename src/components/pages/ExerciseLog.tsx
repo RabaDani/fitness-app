@@ -134,10 +134,10 @@ export function ExerciseLog() {
       {/* Floating Action Button - Mobile only */}
       <button
         onClick={() => setShowAddModal(true)}
-        class="lg:hidden fixed bottom-20 right-4 w-14 h-14 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
+        class="lg:hidden fixed bottom-24 right-4 w-16 h-16 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
         aria-label="Edzés hozzáadása"
       >
-        <Plus size={24} class="text-white" strokeWidth={2.5} />
+        <Plus size={28} class="text-white" strokeWidth={2.5} />
       </button>
 
       {showAddModal && (
