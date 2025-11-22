@@ -1,26 +1,15 @@
 import { useEffect } from "preact/hooks";
 
-// Apply dark mode class to HTML element and update status bar color
+// Apply dark mode class to HTML element
+// Note: Status bar color is now handled by Navigation component based on scroll position
 export function useDarkMode(darkMode: boolean) {
   useEffect(() => {
     // Force remove all dark classes first
     document.documentElement.classList.remove('dark');
 
-    // Update theme-color meta tag for status bar
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-
     // Then add if darkMode is true
     if (darkMode === true) {
       document.documentElement.classList.add('dark');
-      // Dark mode: gray-800 
-      if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', '#1f2937');
-      }
-    } else {
-      // Light mode: white 
-      if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', '#ffffff');
-      }
     }
   }, [darkMode]);
 }

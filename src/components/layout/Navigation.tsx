@@ -1,6 +1,9 @@
 import { h } from 'preact';
+import { useEffect } from 'preact/hooks';
 import { User, TrendingUp, House, Activity, Scale, Salad } from 'lucide-preact';
 import { ThemeToggle } from '../shared';
+import { useAppContext } from '../../context/AppContext';
+import { useScrollPosition } from '../../hooks/useScrollPosition';
 
 interface NavigationProps {
   currentView: 'dashboard' | 'meals' | 'stats' | 'profile' | 'exercise' | 'weight';
@@ -18,6 +21,25 @@ export function Navigation({
   currentView,
   setCurrentView
 }: NavigationProps) {
+  const { darkMode } = useAppContext();
+  const isScrolled = useScrollPosition(10);
+
+  // Update status bar color based on scroll position
+  useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) return;
+
+    if (isScrolled) {
+      // Scrolled: solid white/gray-800
+      const scrolledColor = darkMode ? '#1f2937' : '#ffffff';
+      metaThemeColor.setAttribute('content', scrolledColor);
+    } else {
+      // Not scrolled: transparent bg-blue-50/gray-900
+      const transparentColor = darkMode ? '#111827' : '#eff6ff';
+      metaThemeColor.setAttribute('content', transparentColor);
+    }
+  }, [isScrolled, darkMode]);
+
   const navItems = [
     { id: 'dashboard' as const, label: 'Kezdőlap', icon: House },
     { id: 'meals' as const, label: 'Étkezések', icon: Salad },
@@ -30,7 +52,11 @@ export function Navigation({
   return (
     <>
       {/* Desktop Navigation - Top */}
-      <nav class="hidden lg:block sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-md">
+      <nav class={`hidden lg:block sticky top-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white dark:bg-gray-800 shadow-md'
+          : 'bg-blue-50 dark:bg-gray-900'
+      }`}>
         <div class="container mx-auto px-4">
           <div class="flex justify-between items-center">
             {/* App Logo/Brand */}
@@ -93,7 +119,11 @@ export function Navigation({
       </nav>
 
       {/* Mobile Header - Top (Logo and Theme Toggle) */}
-      <div class="lg:hidden bg-white dark:bg-gray-800 shadow-md sticky top-0 z-40">
+      <div class={`lg:hidden sticky top-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white dark:bg-gray-800 shadow-md'
+          : 'bg-blue-50 dark:bg-gray-900'
+      }`}>
         <div class="flex justify-between items-center px-4 py-3">
           <div class="flex items-center space-x-2">
             <img src={`${import.meta.env.BASE_URL}logo.png`} alt="TheBestOfYou Logo" class="w-7 h-7" />
