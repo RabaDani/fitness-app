@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useEffect } from 'preact/hooks';
+import { useLayoutEffect } from 'preact/hooks';
 import { User, TrendingUp, House, Activity, Scale, Salad } from 'lucide-preact';
 import { ThemeToggle } from '../shared';
 import { useAppContext } from '../../context/AppContext';
@@ -25,7 +25,7 @@ export function Navigation({
   const isScrolled = useScrollPosition(10);
 
   // Update status bar color based on scroll position
-  useEffect(() => {
+  useLayoutEffect(() => {
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (!metaThemeColor) return;
 
@@ -52,7 +52,7 @@ export function Navigation({
   return (
     <>
       {/* Desktop Navigation - Top */}
-      <nav class={`hidden lg:block sticky top-0 z-40 transition-all duration-300 ${
+      <nav class={`hidden lg:block sticky top-0 z-40 ${
         isScrolled
           ? 'bg-white dark:bg-gray-800 shadow-md'
           : 'bg-blue-50 dark:bg-gray-900'
@@ -119,7 +119,7 @@ export function Navigation({
       </nav>
 
       {/* Mobile Header - Top (Logo and Theme Toggle) */}
-      <div class={`lg:hidden sticky top-0 z-40 transition-all duration-300 ${
+      <div class={`lg:hidden sticky top-0 z-40 ${
         isScrolled
           ? 'bg-white dark:bg-gray-800 shadow-md'
           : 'bg-blue-50 dark:bg-gray-900'
