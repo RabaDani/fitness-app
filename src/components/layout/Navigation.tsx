@@ -30,7 +30,7 @@ export function Navigation({
   return (
     <>
       {/* Desktop Navigation - Top */}
-      <nav class="hidden lg:block bg-white dark:bg-gray-800 shadow-md">
+      <nav class="hidden lg:block sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-md">
         <div class="container mx-auto px-4">
           <div class="flex justify-between items-center">
             {/* App Logo/Brand */}

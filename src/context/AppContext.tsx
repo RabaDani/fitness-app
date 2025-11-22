@@ -40,6 +40,8 @@ export function useAppContext(): AppContextType {
     favorites: settings.favorites,
     setFavorites: settings.setFavorites,
     customExercises: settings.customExercises,
-    setCustomExercises: settings.setCustomExercises
+    setCustomExercises: settings.setCustomExercises,
+    showSuccess: settings.showSuccess,
+    showError: settings.showError
   };
 }

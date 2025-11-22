@@ -1,14 +1,10 @@
-import { useContext } from 'preact/hooks';
-import ToastContext from '../context/ToastContext';
+import { useAppContext } from '../context/AppContext';
 
 /**
  * Hook to access toast notification functions from context
- * Returns showSuccess and showError functions
+ * Returns showSuccess and showError functions from SettingsContext via AppContext
  */
 export function useToastContext() {
-  const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error('useToastContext must be used within ToastContext.Provider');
-  }
-  return context;
+  const { showSuccess, showError } = useAppContext();
+  return { showSuccess, showError };
 }

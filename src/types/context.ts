@@ -30,4 +30,6 @@ export interface AppContextType {
   setUserStats: (stats: UserStats) => void;
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
+  showSuccess: (message: string) => void;
+  showError: (message: string) => void;
 }

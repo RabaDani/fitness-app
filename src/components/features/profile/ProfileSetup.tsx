@@ -32,22 +32,20 @@ export function ProfileSetup() {
 
   return (
     <div class="flex items-center justify-center min-h-screen p-4 bg-app">
-      <div class="card rounded-lg shadow-xl p-6 max-w-4xl w-full">
+      <div class="card rounded-lg shadow-xl p-4 sm:p-6 max-w-4xl w-full">
         {/* Header */}
-        <div class="grid grid-cols-3 items-center mb-6">
-          <div class="flex justify-start">
-            <h2 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+        <div class="mb-6 space-y-4">
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
               TheBestOfYou
             </h2>
+            <ThemeToggle />
           </div>
-          <div class="flex justify-center items-center space-x-3">
-            <User size={32} class="text-indigo-600" />
-            <h1 class="heading-1">
+          <div class="flex justify-center items-center space-x-3 py-2">
+            <User size={28} class="text-indigo-600" />
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
               Profil Beállítás
             </h1>
-          </div>
-          <div class="flex justify-end">
-            <ThemeToggle />
           </div>
         </div>
 
