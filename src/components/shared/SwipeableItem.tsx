@@ -105,7 +105,7 @@ export function SwipeableItem({ children, onDelete, disabled = false }: Swipeabl
   return (
     <div class="relative overflow-hidden">
       {/* Red background indicator when swiping */}
-      <div class="absolute right-0 top-0 bottom-0 w-full flex items-center justify-end bg-red-500 dark:bg-red-600 px-8">
+      <div class="lg:hidden absolute right-0 top-0 bottom-0 w-full flex items-center justify-end bg-red-500 dark:bg-red-600 px-8">
         <Trash2 size={20} class="text-white" />
       </div>
 
