@@ -39,9 +39,17 @@ export function MealsLog() {
    * @param index - Index of meal to remove
    */
   const deleteMealDirectly = (index: number): void => {
-    const mealName = dailyMeals[index].name;
+    const deletedMeal = dailyMeals[index];
+    const mealName = deletedMeal.name;
+    const mealsBeforeDelete = [...dailyMeals];
+
     setDailyMeals(dailyMeals.filter((_, i) => i !== index));
-    showSuccess(`${mealName} törölve`);
+
+    // Show toast with undo option
+    showSuccess(`${mealName} törölve`, () => {
+      // Undo: restore all meals to previous state
+      setDailyMeals(mealsBeforeDelete);
+    });
   };
 
   /**
@@ -49,10 +57,18 @@ export function MealsLog() {
    */
   const confirmDelete = (): void => {
     if (mealToDelete !== null) {
-      const mealName = dailyMeals[mealToDelete].name;
+      const deletedMeal = dailyMeals[mealToDelete];
+      const mealName = deletedMeal.name;
+      const mealsBeforeDelete = [...dailyMeals];
+
       setDailyMeals(dailyMeals.filter((_, i) => i !== mealToDelete));
       setMealToDelete(null);
-      showSuccess(`${mealName} törölve`);
+
+      // Show toast with undo option
+      showSuccess(`${mealName} törölve`, () => {
+        // Undo: restore all meals to previous state
+        setDailyMeals(mealsBeforeDelete);
+      });
     }
   };
 

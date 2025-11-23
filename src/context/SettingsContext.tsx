@@ -11,8 +11,8 @@ export interface SettingsContextType {
   setFavorites: (favorites: Food[]) => void;
   customExercises: ExerciseTemplate[];
   setCustomExercises: (exercises: ExerciseTemplate[]) => void;
-  showSuccess: (message: string) => void;
-  showError: (message: string) => void;
+  showSuccess: (message: string, onUndo?: () => void) => void;
+  showError: (message: string, onUndo?: () => void) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);

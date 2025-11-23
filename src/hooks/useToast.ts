@@ -9,9 +9,9 @@ import { ToastItem } from '../components/shared/ToastContainer';
 export function useToast() {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-  const addToast = useCallback((message: string, type: ToastType = 'success') => {
+  const addToast = useCallback((message: string, type: ToastType = 'success', onUndo?: () => void) => {
     const id = `toast-${Date.now()}-${Math.random()}`;
-    const newToast: ToastItem = { id, message, type };
+    const newToast: ToastItem = { id, message, type, onUndo };
 
     setToasts(prev => [...prev, newToast]);
   }, []);
@@ -20,12 +20,12 @@ export function useToast() {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   }, []);
 
-  const showSuccess = useCallback((message: string) => {
-    addToast(message, 'success');
+  const showSuccess = useCallback((message: string, onUndo?: () => void) => {
+    addToast(message, 'success', onUndo);
   }, [addToast]);
 
-  const showError = useCallback((message: string) => {
-    addToast(message, 'error');
+  const showError = useCallback((message: string, onUndo?: () => void) => {
+    addToast(message, 'error', onUndo);
   }, [addToast]);
 
   return {

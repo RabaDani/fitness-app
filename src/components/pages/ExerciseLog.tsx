@@ -39,8 +39,13 @@ export function ExerciseLog() {
    */
   const deleteExerciseDirectly = (index: number): void => {
     const exerciseName = dailyExercises[index].name;
+    const exercisesBeforeDelete = [...dailyExercises];
+
     setDailyExercises(dailyExercises.filter((_, i) => i !== index));
-    showSuccess(`${exerciseName} törölve`);
+
+    showSuccess(`${exerciseName} törölve`, () => {
+      setDailyExercises(exercisesBeforeDelete);
+    });
   };
 
   /**
@@ -49,9 +54,14 @@ export function ExerciseLog() {
   const confirmDelete = (): void => {
     if (exerciseToDelete !== null) {
       const exerciseName = dailyExercises[exerciseToDelete].name;
+      const exercisesBeforeDelete = [...dailyExercises];
+
       setDailyExercises(dailyExercises.filter((_, i) => i !== exerciseToDelete));
       setExerciseToDelete(null);
-      showSuccess(`${exerciseName} törölve`);
+
+      showSuccess(`${exerciseName} törölve`, () => {
+        setDailyExercises(exercisesBeforeDelete);
+      });
     }
   };
 

@@ -55,9 +55,14 @@ export function WeightLog() {
    */
   const deleteEntryDirectly = (date: string): void => {
     const entry = weightHistory.find(e => e.date === date);
+    const historyBeforeDelete = [...weightHistory];
+
     setWeightHistory(weightHistory.filter(e => e.date !== date));
+
     if (entry) {
-      showSuccess('Súlymérés törölve');
+      showSuccess('Súlymérés törölve', () => {
+        setWeightHistory(historyBeforeDelete);
+      });
     }
   };
 
@@ -66,9 +71,14 @@ export function WeightLog() {
    */
   const confirmDelete = (): void => {
     if (entryToDelete) {
+      const historyBeforeDelete = [...weightHistory];
+
       setWeightHistory(weightHistory.filter(e => e.date !== entryToDelete));
       setEntryToDelete(null);
-      showSuccess('Súlymérés törölve');
+
+      showSuccess('Súlymérés törölve', () => {
+        setWeightHistory(historyBeforeDelete);
+      });
     }
   };
 
