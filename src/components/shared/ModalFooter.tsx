@@ -36,7 +36,7 @@ export function ModalFooter({
       <button
         onClick={onConfirm}
         disabled={disabled}
-        class={confirmButtonClass || 'btn-primary flex-1'}
+        class={`${confirmButtonClass || 'btn-primary'} flex-1`}
       >
         {confirmText}
       </button>
