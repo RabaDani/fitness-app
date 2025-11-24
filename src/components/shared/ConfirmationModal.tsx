@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { AlertTriangle, X } from 'lucide-preact';
+import { createPortal } from 'preact/compat';
 
 interface ConfirmationModalProps {
   title: string;
@@ -58,7 +59,7 @@ export function ConfirmationModal({
 
   const colors = getVariantColors();
 
-  return (
+  const modalContent = (
     <div class="modal-overlay">
       <div class="modal-container max-w-md">
         <div class="p-6">
@@ -107,4 +108,6 @@ export function ConfirmationModal({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
