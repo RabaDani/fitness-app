@@ -86,7 +86,7 @@ export function ExerciseLog() {
       </div>
 
       {/* Total calories burned card */}
-      <div class="rounded-lg shadow-md p-6 bg-gradient-to-r from-orange-500 to-red-500 dark:from-blue-800 dark:to-blue-900 text-white">
+      <div class="card-theme">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-sm opacity-90">Mai kalóriaégetés</p>

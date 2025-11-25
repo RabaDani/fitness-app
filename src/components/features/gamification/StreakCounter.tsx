@@ -10,7 +10,7 @@ export function StreakCounter() {
   const { userStats } = useAppContext();
 
   return (
-    <div class="rounded-lg shadow-md p-6 bg-gradient-to-r from-orange-500 to-red-500 dark:from-blue-800 dark:to-blue-900">
+    <div class="card-theme">
       <div class="grid grid-cols-2 gap-4 text-white">
         {/* Current Streak */}
         <div class="flex items-center space-x-3">
