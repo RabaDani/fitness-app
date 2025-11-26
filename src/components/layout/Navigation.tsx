@@ -54,7 +54,7 @@ export function Navigation({
       {/* Desktop Navigation - Top */}
       <nav class={`hidden lg:block sticky top-0 z-50 ${
         isScrolled
-          ? 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl shadow-md'
+          ? 'bg-white dark:bg-gray-800 shadow-md'
           : 'bg-blue-50 dark:bg-gray-900'
       }`}>
         <div class="container mx-auto px-4">

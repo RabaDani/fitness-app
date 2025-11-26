@@ -1,17 +1,18 @@
-import { useState, useMemo, useCallback } from 'preact/hooks';
+import { useState, useMemo, useCallback, useEffect } from 'preact/hooks';
 import ProfileContext from './context/ProfileContext';
 import DataContext from './context/DataContext';
 import SettingsContext from './context/SettingsContext';
 import { Navigation } from './components/layout';
 import { Dashboard, Statistics, ProfileView, MealsLog, ExerciseLog, WeightLog } from './components/pages';
 import { ProfileSetup } from './components/features/profile';
-import { ErrorBoundary, ToastContainer, UpdatePrompt } from './components/shared';
+import { ErrorBoundary, ToastContainer, UpdatePrompt, InstallPrompt } from './components/shared';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useDailyHistory } from './hooks/useDailyHistory';
 import { useGamification } from './hooks/useGamification';
 import { useDailyReset } from './hooks/useDailyReset';
 import { useSwipe } from './hooks/useSwipe';
 import { useToast } from './hooks/useToast';
+import { useNotificationScheduler } from './hooks/useNotificationScheduler';
 import { Profile, Meal, Food, DailyHistory, Exercise, ExerciseTemplate, WeightEntry, UserStats } from './types';
 import { initialFoodsDB, defaultUserStats } from './utils/constants/database';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -29,6 +30,20 @@ import { useDarkMode } from './hooks/useDarkMode';
 function FitnessApp() {
   // View state
   const [currentView, setCurrentView] = useState<'dashboard' | 'meals' | 'stats' | 'profile' | 'exercise' | 'weight'>('dashboard');
+
+  // Disable automatic scroll restoration
+  useEffect(() => {
+    if ('scrollRestoration' in globalThis.history) {
+      globalThis.history.scrollRestoration = 'manual';
+    }
+    // Reset scroll position on mount
+    globalThis.scrollTo(0, 0);
+  }, []);
+
+  // Scroll to top on view change
+  useEffect(() => {
+    globalThis.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentView]);
 
   // Toast notifications
   const { toasts, removeToast, showSuccess, showError } = useToast();
@@ -48,6 +63,7 @@ function FitnessApp() {
   const [foodsDB, setFoodsDB] = useLocalStorage<Food[]>('foodsDB', initialFoodsDB);
   const [favorites, setFavorites] = useLocalStorage<Food[]>('favorites', []);
   const [customExercises, setCustomExercises] = useLocalStorage<ExerciseTemplate[]>('customExercises', []);
+  const [notificationReminders, setNotificationReminders] = useLocalStorage<boolean>('notificationReminders', false);
 
   // Apply dark mode class to HTML element
   useDarkMode(darkMode);
@@ -60,6 +76,9 @@ function FitnessApp() {
 
   // Automatically track gamification stats and achievements
   useGamification(dailyMeals, dailyExercises, dailyHistory, userStats, setUserStats);
+
+  // Schedule daily notification reminders
+  useNotificationScheduler(notificationReminders);
 
   // View navigation order for swipe gestures
   const viewOrder: Array<'dashboard' | 'meals' | 'exercise' | 'weight' | 'stats' | 'profile'> =
@@ -123,9 +142,11 @@ function FitnessApp() {
     setFavorites,
     customExercises,
     setCustomExercises,
+    notificationReminders,
+    setNotificationReminders,
     showSuccess,
     showError
-  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, showSuccess, showError]);
+  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, notificationReminders, setNotificationReminders, showSuccess, showError]);
 
   // Show profile setup if no profile exists
   if (!profile) {
@@ -167,6 +188,7 @@ function FitnessApp() {
               </div>
               <ToastContainer toasts={toasts} onRemove={removeToast} />
               <UpdatePrompt />
+              <InstallPrompt />
             </div>
           </SettingsContext.Provider>
         </DataContext.Provider>

@@ -79,17 +79,26 @@ define(['./workbox-ca84f546'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "index.html",
-    "revision": "0.7vk5q9c7fo"
+    "revision": "0.4b1bhpj6t6o"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
     allowlist: [/^\/$/]
   }));
-  workbox.registerRoute(/^https:\/\/world\.openfoodfacts\.org\/.*/i, new workbox.CacheFirst({
-    "cacheName": "openfoodfacts-cache",
+  workbox.registerRoute(/^https:\/\/api\.spoonacular\.com\/.*/i, new workbox.CacheFirst({
+    "cacheName": "spoonacular-api-cache",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 500,
       maxAgeSeconds: 604800
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/spoonacular\.com\/cdn\/.*/i, new workbox.CacheFirst({
+    "cacheName": "spoonacular-images-cache",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 100,
+      maxAgeSeconds: 2592000
     }), new workbox.CacheableResponsePlugin({
       statuses: [0, 200]
     })]

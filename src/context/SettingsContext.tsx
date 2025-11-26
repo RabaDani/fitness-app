@@ -11,6 +11,8 @@ export interface SettingsContextType {
   setFavorites: (favorites: Food[]) => void;
   customExercises: ExerciseTemplate[];
   setCustomExercises: (exercises: ExerciseTemplate[]) => void;
+  notificationReminders: boolean;
+  setNotificationReminders: (enabled: boolean) => void;
   showSuccess: (message: string, onUndo?: () => void) => void;
   showError: (message: string, onUndo?: () => void) => void;
 }
