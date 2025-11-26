@@ -7,7 +7,7 @@
 	line-height: 1.5;
 	font-weight: 400;
 	color: #222;
-	background-color: #eff6ff;
+	background-color: #ffffff;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -15,38 +15,24 @@
 	-webkit-text-size-adjust: 100%;
 }
 
-:root.dark {
-	background-color: #111827;
-	color: #f9fafb;
-}
-
 * {
 	box-sizing: border-box;
-}
-
-html {
-	background-color: #eff6ff;
-	scroll-behavior: smooth;
-}
-
-html.dark {
-	background-color: #111827;
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	min-height: 100vh;
-	background-color: #eff6ff;
-}
-
-body.dark {
-	background-color: #111827;
 }
 
 #app {
 	width: 100%;
 	min-height: 100vh;
+}
+
+/* Smooth scrolling */
+html {
+	scroll-behavior: smooth;
 }
 
 /* Custom scrollbar */
@@ -359,27 +345,6 @@ body.dark {
 
 	.animate-slideIn {
 		animation: slideIn 0.3s ease-out;
-	}
-}
-
-/* ============================================
-   Safe Area Support for Notched Devices
-   ============================================ */
-@layer utilities {
-	.safe-area-inset-bottom {
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-
-	.safe-area-inset-top {
-		padding-top: env(safe-area-inset-top);
-	}
-
-	.safe-area-inset-left {
-		padding-left: env(safe-area-inset-left);
-	}
-
-	.safe-area-inset-right {
-		padding-right: env(safe-area-inset-right);
 	}
 }
 

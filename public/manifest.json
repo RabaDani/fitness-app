@@ -4,9 +4,8 @@
   "description": "Calorie and nutrition tracking app with exercise diary and weight logging",
   "start_url": ".",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
-  "theme_color": "#eff6ff",
-  "background_color": "#eff6ff",
+  "theme_color": "#4f46e5",
+  "background_color": "#ffffff",
   "orientation": "portrait-primary",
   "icons": [
     {

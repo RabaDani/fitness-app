@@ -30,13 +30,11 @@ export function Navigation({
     if (!metaThemeColor) return;
 
     if (isScrolled) {
-      // Scrolled: semi-transparent backdrop blur effect (rgba with 70% opacity)
-      const scrolledColor = darkMode
-        ? 'rgba(31, 41, 55, 0.7)'   // gray-800/70
-        : 'rgba(255, 255, 255, 0.7)'; // white/70
+      // Scrolled: solid white/gray-800
+      const scrolledColor = darkMode ? '#1f2937' : '#ffffff';
       metaThemeColor.setAttribute('content', scrolledColor);
     } else {
-      // Not scrolled: fully opaque background colors
+      // Not scrolled: transparent bg-blue-50/gray-900
       const transparentColor = darkMode ? '#111827' : '#eff6ff';
       metaThemeColor.setAttribute('content', transparentColor);
     }
