@@ -2,8 +2,9 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Plus, TrendingDown, TrendingUp, Scale } from 'lucide-preact';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { useAppContext } from '../../context/AppContext';
-import { useToastContext } from '../../hooks/useToastContext';
+import { useProfile } from '../../context/ProfileContext';
+import { useData } from '../../context/DataContext';
+import { useSettings } from '../../context/SettingsContext';
 import { ConfirmationModal, SwipeableItem } from '../shared';
 import { WeightEntryCard, AddWeightModal, GoalReachedModal } from '../features/weight';
 import { BMIDisplay } from '../features/profile/BMIDisplay';
@@ -15,8 +16,9 @@ import { getChartColors } from '../../utils/chartColors';
  * Shows current weight, goal, progress, and historical chart
  */
 export function WeightLog() {
-  const { weightHistory, setWeightHistory, profile } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { profile } = useProfile();
+  const { weightHistory, setWeightHistory } = useData();
+  const { showSuccess } = useSettings();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showGoalReachedModal, setShowGoalReachedModal] = useState(false);
   const [entryToDelete, setEntryToDelete] = useState<string | null>(null);

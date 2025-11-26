@@ -1,8 +1,9 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { WeightEntry } from '../../../types';
-import { useAppContext } from '../../../context/AppContext';
-import { useToastContext } from '../../../hooks/useToastContext';
+import { useProfile } from '../../../context/ProfileContext';
+import { useData } from '../../../context/DataContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { getTodayString } from '../../../utils/dateHelpers';
 import { ModalWrapper, ModalHeader, ModalFooter } from '../../shared';
 
@@ -17,8 +18,9 @@ interface AddWeightModalProps {
  * @param onGoalReached - Callback when weight goal is reached
  */
 export function AddWeightModal({ onClose, onGoalReached }: AddWeightModalProps) {
-  const { weightHistory, setWeightHistory, profile, darkMode } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { profile } = useProfile();
+  const { weightHistory, setWeightHistory } = useData();
+  const { darkMode, showSuccess } = useSettings();
   const today = getTodayString();
 
   // Get the latest weight measurement to pre-fill

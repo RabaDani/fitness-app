@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Flame, TrendingDown, Info } from 'lucide-preact';
 import { exerciseDatabase } from '../../../utils/constants/database';
 import { UI_CONSTANTS } from '../../../utils/constants/ui';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
 
 interface SelectedExerciseDetailsProps {
   exercise: typeof exerciseDatabase[0];
@@ -25,7 +25,7 @@ export function SelectedExerciseDetails({
   onDurationChange,
   preview
 }: SelectedExerciseDetailsProps) {
-  const { profile } = useAppContext();
+  const { profile } = useProfile();
 
   return (
     <div class="space-y-3">

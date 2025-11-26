@@ -2,8 +2,9 @@ import { h } from 'preact';
 import { useState, useMemo } from 'preact/hooks';
 import { ListCheck, Plus } from 'lucide-preact';
 import { Exercise } from '../../../types';
-import { useAppContext } from '../../../context/AppContext';
-import { useToastContext } from '../../../hooks/useToastContext';
+import { useProfile } from '../../../context/ProfileContext';
+import { useData } from '../../../context/DataContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { exerciseDatabase } from '../../../utils/constants/database';
 import { exerciseCategoryLabels } from '../../../utils/constants/ui';
 import { calculateTotalCaloriesBurned, calculatePercentage } from '../../../utils/calculations';
@@ -30,8 +31,9 @@ export function AddExerciseModal({
   customExercises,
   setCustomExercises
 }: AddExerciseModalProps) {
-  const { dailyExercises, setDailyExercises, profile } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { profile } = useProfile();
+  const { dailyExercises, setDailyExercises } = useData();
+  const { showSuccess } = useSettings();
   const [selectedExercise, setSelectedExercise] = useState<typeof exerciseDatabase[0] | null>(null);
   const [duration, setDuration] = useState(30);
   const [isCreatingCustom, setIsCreatingCustom] = useState(false);

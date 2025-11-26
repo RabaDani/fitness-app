@@ -1,13 +1,13 @@
 import { h } from 'preact';
 import { Moon, Sun } from 'lucide-preact';
-import { useAppContext } from '../../context/AppContext';
+import { useSettings } from '../../context/SettingsContext';
 
 /**
  * Theme toggle component for switching between light and dark modes
  * Displays a sun/moon icon and updates the global dark mode setting
  */
 export function ThemeToggle() {
-  const { darkMode, setDarkMode } = useAppContext();
+  const { darkMode, setDarkMode } = useSettings();
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);

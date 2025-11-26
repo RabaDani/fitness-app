@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Heart } from 'lucide-preact';
 import { Food } from '../../../types';
 import { FoodImage } from './FoodImage';
-import { useAppContext } from '../../../context/AppContext';
+import { useSettings } from '../../../context/SettingsContext';
 
 interface FoodListItemProps {
   food: Food;
@@ -25,7 +25,7 @@ export function FoodListItem({
   onToggleFavorite,
   variant = 'default'
 }: FoodListItemProps) {
-  const { darkMode } = useAppContext();
+  const { darkMode } = useSettings();
 
   const getCardClass = () => {
     if (isSelected) {

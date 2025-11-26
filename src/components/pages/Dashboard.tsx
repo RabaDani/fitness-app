@@ -1,7 +1,8 @@
 import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { useAppContext } from '../../context/AppContext';
+import { useProfile } from '../../context/ProfileContext';
+import { useData } from '../../context/DataContext';
 import { StreakCounter, AchievementsBadge } from '../features/gamification';
 import { MealSummaryCard, MacroProgress } from '../features/dashboard';
 import { calculateTotalNutrition, calculateTotalCaloriesBurned } from '../../utils/calculations';
@@ -12,7 +13,8 @@ import { MACRO_CONSTANTS } from '../../utils/constants';
  * Displays progress bars, pie charts, meal summaries, and exercise tracking
  */
 export function Dashboard() {
-  const { profile, dailyMeals, dailyExercises } = useAppContext();
+  const { profile } = useProfile();
+  const { dailyMeals, dailyExercises } = useData();
 
   if (!profile) return null;
 

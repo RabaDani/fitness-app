@@ -2,8 +2,8 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Plus } from 'lucide-preact';
 import { Meal } from '../../types';
-import { useAppContext } from '../../context/AppContext';
-import { useToastContext } from '../../hooks/useToastContext';
+import { useData } from '../../context/DataContext';
+import { useSettings } from '../../context/SettingsContext';
 import { MealCard, FoodSearchModal } from '../features/meals';
 import { ConfirmationModal, SwipeableItem } from '../shared';
 import { mealTypeLabels } from '../../utils/constants/ui';
@@ -13,8 +13,8 @@ import { mealTypeLabels } from '../../utils/constants/ui';
  * Organizes meals by type (breakfast, lunch, dinner, snack)
  */
 export function MealsLog() {
-  const { dailyMeals, setDailyMeals } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { dailyMeals, setDailyMeals } = useData();
+  const { showSuccess } = useSettings();
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedMealType, setSelectedMealType] = useState<Meal['mealType']>('breakfast');
   const [mealToDelete, setMealToDelete] = useState<number | null>(null);

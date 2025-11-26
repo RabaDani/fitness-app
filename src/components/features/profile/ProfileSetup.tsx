@@ -1,7 +1,8 @@
 import { h } from 'preact';
 import { User } from 'lucide-preact';
 import { Profile } from '../../../types';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { activityLabels, goalLabels, UI_CONSTANTS } from '../../../utils/constants/ui';
 import { useProfileForm } from '../../../hooks/useProfileForm';
 import { ProfileFormInput, ProfileSelect, InfoNote, ThemeToggle } from '../../shared';
@@ -12,7 +13,8 @@ import { BMIDisplay, CaloriePreview, MacroPreview } from './';
  * Features: BMI preview, 2-column layout, dark mode support, real-time calculations
  */
 export function ProfileSetup() {
-  const { setProfile, darkMode } = useAppContext();
+  const { setProfile } = useProfile();
+  const { darkMode } = useSettings();
 
   const {
     formData,

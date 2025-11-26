@@ -1,6 +1,8 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { useAppContext } from '../../context/AppContext';
+import { useProfile } from '../../context/ProfileContext';
+import { useData } from '../../context/DataContext';
+import { useSettings } from '../../context/SettingsContext';
 import { ConfirmationModal } from '../shared';
 import { EditProfileModal, ProfileField, NutritionCard } from '../features/profile';
 import { activityLabels, goalLabels } from '../../utils/constants/ui';
@@ -11,19 +13,9 @@ import { initialFoodsDB } from '../../utils/constants/database';
  * Allows users to update their profile and recalculate macro targets
  */
 export function ProfileView() {
-  const {
-    profile,
-    setProfile,
-    setDailyMeals,
-    setDailyHistory,
-    weightHistory,
-    setWeightHistory,
-    setDailyExercises,
-    setCustomExercises,
-    setFavorites,
-    setFoodsDB,
-    setUserStats
-  } = useAppContext();
+  const { profile, setProfile, setUserStats } = useProfile();
+  const { setDailyMeals, setDailyHistory, weightHistory, setWeightHistory, setDailyExercises } = useData();
+  const { setCustomExercises, setFavorites, setFoodsDB } = useSettings();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 

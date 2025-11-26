@@ -2,7 +2,9 @@ import { h } from 'preact';
 import { Food } from '../../../types';
 import { FoodImage } from './FoodImage';
 import { calculateNutrition, calculateTotalNutrition, calculatePercentage } from '../../../utils/calculations';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
+import { useData } from '../../../context/DataContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { Flame, TrendingUp } from 'lucide-preact';
 
 interface SelectedFoodDetailsProps {
@@ -20,7 +22,9 @@ export function SelectedFoodDetails({
   amount,
   onAmountChange
 }: SelectedFoodDetailsProps) {
-  const { darkMode, profile, dailyMeals } = useAppContext();
+  const { profile } = useProfile();
+  const { dailyMeals } = useData();
+  const { darkMode } = useSettings();
   const nutrition = calculateNutrition(food, amount);
 
   // Calculate current daily totals

@@ -2,8 +2,8 @@ import { h } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import { Search, Heart } from 'lucide-preact';
 import { Food, Meal } from '../../../types';
-import { useAppContext } from '../../../context/AppContext';
-import { useToastContext } from '../../../hooks/useToastContext';
+import { useData } from '../../../context/DataContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { SelectedFoodDetails } from './SelectedFoodDetails';
 import { FoodSearchTab } from './FoodSearchTab';
 import { FavoritesFoodTab } from './FavoritesFoodTab';
@@ -25,8 +25,8 @@ export function FoodSearchModal({
   mealType,
   setMealType
 }: FoodSearchModalProps) {
-  const { foodsDB, setFoodsDB, dailyMeals, setDailyMeals, favorites, setFavorites } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { dailyMeals, setDailyMeals } = useData();
+  const { foodsDB, setFoodsDB, favorites, setFavorites, showSuccess } = useSettings();
   const [activeTab, setActiveTab] = useState<'search' | 'favorites'>('search');
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [amount, setAmount] = useState(100);

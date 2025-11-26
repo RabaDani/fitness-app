@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useAppContext } from '../../../context/AppContext';
+import { useSettings } from '../../../context/SettingsContext';
 
 interface MacroProgressProps {
   label: string;
@@ -26,7 +26,7 @@ export function MacroProgress({
   color
 }: MacroProgressProps) {
   const percentage = Math.min((current / goal) * 100, 100);
-  const { darkMode } = useAppContext();
+  const { darkMode } = useSettings();
 
   return (
     <div>

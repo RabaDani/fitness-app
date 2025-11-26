@@ -1,8 +1,8 @@
 import { h } from 'preact';
 import { User } from 'lucide-preact';
 import { Profile } from '../../../types';
-import { useAppContext } from '../../../context/AppContext';
-import { useToastContext } from '../../../hooks/useToastContext';
+import { useProfile } from '../../../context/ProfileContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { activityLabels, goalLabels } from '../../../utils/constants/ui';
 import { BMIDisplay } from './BMIDisplay';
 import { CaloriePreview } from './CaloriePreview';
@@ -20,8 +20,8 @@ interface EditProfileModalProps {
  * Uses universal useProfileForm hook with preview and change tracking enabled
  */
 export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
-  const { setProfile } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { setProfile } = useProfile();
+  const { showSuccess } = useSettings();
 
   // Use universal hook for all form logic
   const {

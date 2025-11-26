@@ -13,7 +13,8 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { Calendar } from 'lucide-preact';
-import { useAppContext } from '../../context/AppContext';
+import { useProfile } from '../../context/ProfileContext';
+import { useData } from '../../context/DataContext';
 import { StatCard } from '../features/statistics';
 import { ChartData } from '../../types';
 import { dayNames } from '../../utils/constants/ui';
@@ -25,7 +26,8 @@ import { getDateString } from '../../utils/dateHelpers';
  * Shows calorie intake and macro distribution over the last 7 days
  */
 export function Statistics() {
-  const { dailyHistory, dailyMeals, profile } = useAppContext();
+  const { profile } = useProfile();
+  const { dailyHistory, dailyMeals } = useData();
 
   /**
    * Generate weekly data from actual history

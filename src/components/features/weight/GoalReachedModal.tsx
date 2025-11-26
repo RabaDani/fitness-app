@@ -1,7 +1,8 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Trophy, Target } from 'lucide-preact';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
+import { useData } from '../../../context/DataContext';
 
 interface GoalReachedModalProps {
   onClose: () => void;
@@ -12,7 +13,8 @@ interface GoalReachedModalProps {
  * @param onClose - Callback to close the modal
  */
 export function GoalReachedModal({ onClose }: GoalReachedModalProps) {
-  const { profile, setProfile, weightHistory } = useAppContext();
+  const { profile, setProfile } = useProfile();
+  const { weightHistory } = useData();
   const [showSetNewGoal, setShowSetNewGoal] = useState(false);
   const [newGoalWeight, setNewGoalWeight] = useState(profile?.goalWeight || 70);
 

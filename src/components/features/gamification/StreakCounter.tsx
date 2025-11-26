@@ -1,13 +1,13 @@
 import { h } from 'preact';
 import { Flame, Trophy } from 'lucide-preact';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
 
 /**
  * Streak counter component showing current and longest streaks
  * Motivates users to maintain daily logging habits
  */
 export function StreakCounter() {
-  const { userStats } = useAppContext();
+  const { userStats } = useProfile();
 
   return (
     <div class="card-theme">

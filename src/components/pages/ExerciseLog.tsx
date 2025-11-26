@@ -2,8 +2,8 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Plus, Flame } from 'lucide-preact';
 import { Exercise } from '../../types';
-import { useAppContext } from '../../context/AppContext';
-import { useToastContext } from '../../hooks/useToastContext';
+import { useData } from '../../context/DataContext';
+import { useSettings } from '../../context/SettingsContext';
 import { ConfirmationModal, SwipeableItem } from '../shared';
 import { ExerciseCard, AddExerciseModal } from '../features/exercises';
 import { exerciseCategoryLabels } from '../../utils/constants/ui';
@@ -13,8 +13,8 @@ import { exerciseCategoryLabels } from '../../utils/constants/ui';
  * Helps users monitor their calorie expenditure and activity levels
  */
 export function ExerciseLog() {
-  const { dailyExercises, setDailyExercises, customExercises, setCustomExercises } = useAppContext();
-  const { showSuccess } = useToastContext();
+  const { dailyExercises, setDailyExercises } = useData();
+  const { customExercises, setCustomExercises, showSuccess } = useSettings();
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Exercise['category']>('cardio');
   const [exerciseToDelete, setExerciseToDelete] = useState<number | null>(null);

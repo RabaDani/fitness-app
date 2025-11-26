@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { UI_CONSTANTS } from '../../../utils/constants/ui';
-import { useAppContext } from '../../../context/AppContext';
+import { useSettings } from '../../../context/SettingsContext';
 
 interface CustomExerciseFormProps {
   customName: string;
@@ -20,7 +20,7 @@ export function CustomExerciseForm({
   setCustomCaloriesPerMinute,
   onCreateCustomExercise
 }: CustomExerciseFormProps) {
-  const { darkMode } = useAppContext();
+  const { darkMode } = useSettings();
 
   return (
     <div class="card-preview-blue">

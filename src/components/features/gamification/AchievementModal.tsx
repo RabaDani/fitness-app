@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { X } from 'lucide-preact';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
 import { achievementsDatabase } from '../../../utils/constants/database';
 import { Achievement } from '../../../types';
 
@@ -13,7 +13,7 @@ interface AchievementModalProps {
  * Displays all achievements with their unlock status and progress
  */
 export function AchievementModal({ onClose }: AchievementModalProps) {
-  const { userStats } = useAppContext();
+  const { userStats } = useProfile();
 
   /**
    * Calculate progress for each achievement based on user stats

@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Award } from 'lucide-preact';
-import { useAppContext } from '../../../context/AppContext';
+import { useProfile } from '../../../context/ProfileContext';
 import { AchievementModal } from './AchievementModal';
 import { useViewedAchievements } from '../../../hooks/useViewedAchievements';
 
@@ -11,7 +11,7 @@ import { useViewedAchievements } from '../../../hooks/useViewedAchievements';
  * Displays notification dot if there are new unseen achievements
  */
 export function AchievementsBadge() {
-  const { userStats } = useAppContext();
+  const { userStats } = useProfile();
   const [showModal, setShowModal] = useState(false);
 
   const unlockedCount = userStats.achievementsUnlocked.length;

@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Heart } from 'lucide-preact';
 import { Food } from '../../../types';
-import { useAppContext } from '../../../context/AppContext';
+import { useSettings } from '../../../context/SettingsContext';
 import { FoodListItem } from './FoodListItem';
 
 interface FavoritesFoodTabProps {
@@ -21,7 +21,7 @@ export function FavoritesFoodTab({
   onSelectFood,
   onToggleFavorite
 }: FavoritesFoodTabProps) {
-  const { darkMode } = useAppContext();
+  const { darkMode } = useSettings();
 
   if (favorites.length === 0) {
     return (

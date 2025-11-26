@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useLayoutEffect } from 'preact/hooks';
 import { User, TrendingUp, House, Activity, Scale, Salad } from 'lucide-preact';
 import { ThemeToggle } from '../shared';
-import { useAppContext } from '../../context/AppContext';
+import { useSettings } from '../../context/SettingsContext';
 import { useScrollPosition } from '../../hooks/useScrollPosition';
 
 interface NavigationProps {
@@ -21,7 +21,7 @@ export function Navigation({
   currentView,
   setCurrentView
 }: NavigationProps) {
-  const { darkMode } = useAppContext();
+  const { darkMode } = useSettings();
   const isScrolled = useScrollPosition(10);
 
   // Update status bar color based on scroll position
