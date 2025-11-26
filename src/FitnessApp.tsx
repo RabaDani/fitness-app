@@ -5,7 +5,7 @@ import SettingsContext from './context/SettingsContext';
 import { Navigation } from './components/layout';
 import { Dashboard, Statistics, ProfileView, MealsLog, ExerciseLog, WeightLog } from './components/pages';
 import { ProfileSetup } from './components/features/profile';
-import { ErrorBoundary, ToastContainer } from './components/shared';
+import { ErrorBoundary, ToastContainer, UpdatePrompt } from './components/shared';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useDailyHistory } from './hooks/useDailyHistory';
 import { useGamification } from './hooks/useGamification';
@@ -166,6 +166,7 @@ function FitnessApp() {
                 </ErrorBoundary>
               </div>
               <ToastContainer toasts={toasts} onRemove={removeToast} />
+              <UpdatePrompt />
             </div>
           </SettingsContext.Provider>
         </DataContext.Provider>

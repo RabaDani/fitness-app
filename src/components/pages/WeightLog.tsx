@@ -5,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
-import { ConfirmationModal, SwipeableItem, FloatingActionButton } from '../shared';
+import { ConfirmationModal, SwipeableItem, FloatingActionButton, EmptyState } from '../shared';
 import { WeightEntryCard, AddWeightModal, GoalReachedModal } from '../features/weight';
 import { BMIDisplay } from '../features/profile/BMIDisplay';
 import { calculateBMI } from '../../utils/calculations';
@@ -199,21 +199,15 @@ export function WeightLog() {
                 ))}
             </div>
           ) : (
-            <div class="text-center py-12">
-              <Scale size={48} class="mx-auto mb-3 text-gray-300 dark:text-gray-600" />
-              <p class="mb-3 text-secondary">
-                Még nincs rögzített súlymérés
-              </p>
-              <p class="text-sm mb-4 text-secondary">
-                Kezdd el követni a súlyodat a célod eléréséhez!
-              </p>
-              <button
-                onClick={() => setShowAddModal(true)}
-                class="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
-              >
-                + Súly rögzítése
-              </button>
-            </div>
+            <EmptyState
+              icon={<Scale size={48} class="text-gray-400 dark:text-gray-500" />}
+              title="Még nincs rögzített súlymérés"
+              message="Kezdd el követni a súlyodat és haladj a célod felé!"
+              action={{
+                label: 'Súly rögzítése',
+                onClick: () => setShowAddModal(true)
+              }}
+            />
           )}
         </div>
       </div>

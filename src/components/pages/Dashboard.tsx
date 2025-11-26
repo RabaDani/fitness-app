@@ -1,10 +1,12 @@
 import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { Salad, Activity } from 'lucide-preact';
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';
 import { StreakCounter, AchievementsBadge } from '../features/gamification';
 import { MealSummaryCard, MacroProgress } from '../features/dashboard';
+import { EmptyState } from '../shared';
 import { calculateTotalNutrition, calculateTotalCaloriesBurned } from '../../utils/calculations';
 import { MACRO_CONSTANTS } from '../../utils/constants';
 
@@ -130,9 +132,13 @@ export function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <p class="text-center py-12 text-secondary">
-              Még nincs bevitt étel ma
-            </p>
+            <div class="py-8">
+              <EmptyState
+                icon={<Salad size={48} class="text-gray-400 dark:text-gray-500" />}
+                title="Még nincs bevitt étel"
+                message="Kezdd el rögzíteni az ételeidet, hogy lásd a makró eloszlást!"
+              />
+            </div>
           )}
         </div>
 
@@ -178,14 +184,11 @@ export function Dashboard() {
             ))}
           </div>
         ) : (
-          <div class="text-center py-12">
-            <p class="mb-3 text-secondary">
-              Még nem adtál hozzá ételt ma
-            </p>
-            <p class="text-sm text-secondary">
-              Menj az Étkezések fülre és kezdd el rögzíteni az ételeid!
-            </p>
-          </div>
+          <EmptyState
+            icon={<Activity size={48} class="text-gray-400 dark:text-gray-500" />}
+            title="Még nem adtál hozzá ételt ma"
+            message="Kezdd el a napot! Menj az Étkezések fülre és rögzítsd a mai első étkezésedet."
+          />
         )}
       </div>
     </div>

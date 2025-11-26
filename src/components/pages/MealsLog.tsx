@@ -1,11 +1,11 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { Plus } from 'lucide-preact';
+import { Plus, UtensilsCrossed } from 'lucide-preact';
 import { Meal } from '../../types';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
 import { MealCard, FoodSearchModal } from '../features/meals';
-import { ConfirmationModal, SwipeableItem, FloatingActionButton } from '../shared';
+import { ConfirmationModal, SwipeableItem, FloatingActionButton, EmptyState } from '../shared';
 import { mealTypeLabels } from '../../utils/constants/ui';
 
 /**
@@ -108,20 +108,18 @@ export function MealsLog() {
                   )}
                 </div>
               ) : (
-                <div class="text-center py-12">
-                  <p class="mb-2 text-secondary">
-                    Nincs étel ebben az étkezésben
-                  </p>
-                  <button
-                    onClick={() => {
+                <EmptyState
+                  icon={<UtensilsCrossed size={40} class="text-gray-400 dark:text-gray-500" />}
+                  title="Nincs étel ebben az étkezésben"
+                  message="Adj hozzá ételt, hogy nyomon kövesd a kalóriákat és makrókat!"
+                  action={{
+                    label: 'Étel hozzáadása',
+                    onClick: () => {
                       setSelectedMealType(type.id);
                       setShowAddModal(true);
-                    }}
-                    class="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
-                  >
-                    + Étel hozzáadása
-                  </button>
-                </div>
+                    }
+                  }}
+                />
               )
               }
             </div>

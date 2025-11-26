@@ -1,10 +1,10 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { Plus, Flame } from 'lucide-preact';
+import { Plus, Flame, Dumbbell } from 'lucide-preact';
 import { Exercise } from '../../types';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
-import { ConfirmationModal, SwipeableItem, FloatingActionButton } from '../shared';
+import { ConfirmationModal, SwipeableItem, FloatingActionButton, EmptyState } from '../shared';
 import { ExerciseCard, AddExerciseModal } from '../features/exercises';
 import { exerciseCategoryLabels } from '../../utils/constants/ui';
 
@@ -121,20 +121,18 @@ export function ExerciseLog() {
                   )}
                 </div>
               ) : (
-                <div class="text-center py-12">
-                  <p class="mb-2 text-secondary">
-                    Nincs rögzített edzés ebben a kategóriában
-                  </p>
-                  <button
-                    onClick={() => {
+                <EmptyState
+                  icon={<Dumbbell size={40} class="text-gray-400 dark:text-gray-500" />}
+                  title="Nincs rögzített edzés"
+                  message="Rögzítsd az edzésedet és kövesd nyomon a kalóriaégetést!"
+                  action={{
+                    label: 'Edzés hozzáadása',
+                    onClick: () => {
                       setSelectedCategory(category.id);
                       setShowAddModal(true);
-                    }}
-                    class="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
-                  >
-                    + Edzés hozzáadása
-                  </button>
-                </div>
+                    }
+                  }}
+                />
               )}
             </div>
           );

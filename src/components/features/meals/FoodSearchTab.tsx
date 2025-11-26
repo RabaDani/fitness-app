@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { Search } from 'lucide-preact';
 import { Food } from '../../../types';
 import { FoodListItem } from './FoodListItem';
+import { SkeletonList } from '../../shared';
 import { UI_CONSTANTS } from '../../../utils/constants/ui';
 
 interface FoodSearchTabProps {
@@ -65,9 +66,9 @@ export function FoodSearchTab({
 
       {/* Loading state */}
       {isSearching && (
-        <div class="flex justify-center items-center py-12">
-          <div class="spinner-md"></div>
-          <p class="text-secondary ml-2 text-sm">Keresés...</p>
+        <div>
+          <p class="text-secondary text-xs font-medium mb-2">Keresés folyamatban...</p>
+          <SkeletonList count={5} />
         </div>
       )}
 
