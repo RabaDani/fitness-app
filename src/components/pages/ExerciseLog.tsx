@@ -4,7 +4,7 @@ import { Plus, Flame } from 'lucide-preact';
 import { Exercise } from '../../types';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
-import { ConfirmationModal, SwipeableItem } from '../shared';
+import { ConfirmationModal, SwipeableItem, FloatingActionButton } from '../shared';
 import { ExerciseCard, AddExerciseModal } from '../features/exercises';
 import { exerciseCategoryLabels } from '../../utils/constants/ui';
 
@@ -142,13 +142,9 @@ export function ExerciseLog() {
       </div>
 
       {/* Floating Action Button - Mobile only */}
-      <button
-        onClick={() => setShowAddModal(true)}
-        class="lg:hidden fixed bottom-24 right-4 w-16 h-16 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
-        aria-label="Edzés hozzáadása"
-      >
-        <Plus size={28} class="text-white" strokeWidth={2.5} />
-      </button>
+      < FloatingActionButton onClick={() =>
+        setShowAddModal(true)
+      } aria-label="Edzés hozzáadása" />
 
       {showAddModal && (
         <AddExerciseModal

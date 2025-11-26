@@ -55,7 +55,7 @@ export const goalLabels = {
 } as const;
 
 export const exerciseCategoryLabels = {
-  cardio: 'Kardiós',
+  cardio: 'Kardió',
   strength: 'Erősítő',
   mobility: 'Mobilitás',
   sports: 'Sport'

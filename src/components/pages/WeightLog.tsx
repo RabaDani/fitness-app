@@ -5,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
-import { ConfirmationModal, SwipeableItem } from '../shared';
+import { ConfirmationModal, SwipeableItem, FloatingActionButton } from '../shared';
 import { WeightEntryCard, AddWeightModal, GoalReachedModal } from '../features/weight';
 import { BMIDisplay } from '../features/profile/BMIDisplay';
 import { calculateBMI } from '../../utils/calculations';
@@ -122,7 +122,7 @@ export function WeightLog() {
           </p>
         </div>
 
-         {/* BMI Display */}
+        {/* BMI Display */}
         <div class="card">
           <BMIDisplay
             currentBMI={currentBMI}
@@ -219,13 +219,9 @@ export function WeightLog() {
       </div>
 
       {/* Floating Action Button - Mobile only */}
-      <button
-        onClick={() => setShowAddModal(true)}
-        class="lg:hidden fixed bottom-24 right-4 w-16 h-16 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
-        aria-label="Súly rögzítése"
-      >
-        <Plus size={28} class="text-white" strokeWidth={2.5} />
-      </button>
+      <FloatingActionButton onClick={() =>
+        setShowAddModal(true)
+      } aria-label="Súly rögzítése" />
 
       {showAddModal && (
         <AddWeightModal

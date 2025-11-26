@@ -10,3 +10,4 @@ export * from './InfoNote';
 export * from './SwipeableItem';
 export * from './Toast';
 export * from './ToastContainer';
+export * from './FloatingActionButton';

@@ -5,7 +5,7 @@ import { Meal } from '../../types';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
 import { MealCard, FoodSearchModal } from '../features/meals';
-import { ConfirmationModal, SwipeableItem } from '../shared';
+import { ConfirmationModal, SwipeableItem, FloatingActionButton } from '../shared';
 import { mealTypeLabels } from '../../utils/constants/ui';
 
 /**
@@ -117,50 +117,46 @@ export function MealsLog() {
                       setSelectedMealType(type.id);
                       setShowAddModal(true);
                     }}
-                  class="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
+                    class="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
                   >
-                  + Étel hozzáadása
-                </button>
+                    + Étel hozzáadása
+                  </button>
                 </div>
-          )
-        }
+              )
+              }
             </div>
-      );
+          );
         })}
-    </div>
+      </div>
 
-      {/* Floating Action Button - Mobile only */ }
-  <button
-    onClick={() => setShowAddModal(true)}
-    class="lg:hidden fixed bottom-24 right-4 w-16 h-16 rounded-full bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg flex items-center justify-center z-40 transition-all active:scale-90 hover:scale-105"
-    aria-label="Étel hozzáadása"
-  >
-    <Plus size={28} class="text-white" strokeWidth={2.5} />
-  </button>
+      {/* Floating Action Button - Mobile only */}
+      < FloatingActionButton onClick={() =>
+        setShowAddModal(true) 
+      } aria-label="Étel hozzáadása"/>
 
-  {
-    showAddModal && (
-      <FoodSearchModal
-        onClose={() => setShowAddModal(false)}
-        mealType={selectedMealType}
-        setMealType={setSelectedMealType}
-      />
-    )
-  }
+      {
+        showAddModal && (
+          <FoodSearchModal
+            onClose={() => setShowAddModal(false)}
+            mealType={selectedMealType}
+            setMealType={setSelectedMealType}
+          />
+        )
+      }
 
-  {
-    mealToDelete !== null && (
-      <ConfirmationModal
-        title="Étel törlése"
-        message="Biztosan törölni szeretnéd ezt az ételt?"
-        details={`${dailyMeals[mealToDelete].name} - ${dailyMeals[mealToDelete].calories} kcal`}
-        onConfirm={confirmDelete}
-        onCancel={() => setMealToDelete(null)}
-        confirmText="Törlés"
-        cancelText="Mégse"
-      />
-    )
-  }
+      {
+        mealToDelete !== null && (
+          <ConfirmationModal
+            title="Étel törlése"
+            message="Biztosan törölni szeretnéd ezt az ételt?"
+            details={`${dailyMeals[mealToDelete].name} - ${dailyMeals[mealToDelete].calories} kcal`}
+            onConfirm={confirmDelete}
+            onCancel={() => setMealToDelete(null)}
+            confirmText="Törlés"
+            cancelText="Mégse"
+          />
+        )
+      }
     </div >
   );
 };
