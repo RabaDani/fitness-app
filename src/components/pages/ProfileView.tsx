@@ -120,23 +120,25 @@ export function ProfileView() {
         </div>
       </div>
 
-      {/* Notification Settings */}
-      <NotificationSettings
-        remindersEnabled={notificationReminders}
-        onRemindersChange={setNotificationReminders}
-        showSuccess={showSuccess}
-        showError={showError}
-      />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Notification Settings */}
+        <NotificationSettings
+          remindersEnabled={notificationReminders}
+          onRemindersChange={setNotificationReminders}
+          showSuccess={showSuccess}
+          showError={showError}
+        />
 
-      {/* Danger zone */}
-      <div class="card">
-        <h2 class="heading-2 mb-4 text-red-600">Veszélyes zóna</h2>
-        <p class="mb-4 text-secondary">
-          Az összes adat törlése az alkalmazásból. Ez a művelet nem visszavonható!
-        </p>
-        <button onClick={handleReset} class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
-          Minden adat törlése
-        </button>
+        {/* Danger zone */}
+        <div class="card">
+          <h2 class="heading-2 mb-4 text-red-600">Veszélyes zóna</h2>
+          <p class="mb-4 text-secondary">
+            Az összes adat törlése az alkalmazásból. Ez a művelet nem visszavonható!
+          </p>
+          <button onClick={handleReset} class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+            Minden adat törlése
+          </button>
+        </div>
       </div>
 
       {/* Edit Profile Modal */}

@@ -235,9 +235,8 @@ export function NotificationSettings({
           <button
             onClick={subscribeToPush}
             disabled={isLoading}
-            class="btn-primary w-full"
+            class="btn-primary"
           >
-            <Bell size={16} class="mr-2" />
             {isLoading ? 'Folyamatban...' : 'Feliratkozás az értesítésekre'}
           </button>
         )}
@@ -248,7 +247,6 @@ export function NotificationSettings({
             disabled={isLoading}
             class="btn-secondary w-full"
           >
-            <BellOff size={16} class="mr-2" />
             {isLoading ? 'Folyamatban...' : 'Leiratkozás'}
           </button>
         )}

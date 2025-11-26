@@ -77,7 +77,6 @@ export function InstallPrompt() {
             </p>
             <div class="flex space-x-2">
               <button onClick={handleInstall} class="btn-primary-sm">
-                <Download size={14} class="mr-1" />
                 Telepítés
               </button>
               <button onClick={handleDismiss} class="btn-secondary px-3 py-1.5 rounded text-xs">
