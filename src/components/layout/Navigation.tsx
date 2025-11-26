@@ -121,7 +121,7 @@ export function Navigation({
       {/* Mobile Header - Top (Logo and Theme Toggle) */}
       <div class={`lg:hidden sticky top-0 z-50 ${
         isScrolled
-          ? 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl shadow-md'
+          ? 'bg-white dark:bg-gray-800 shadow-md'
           : 'bg-blue-50 dark:bg-gray-900'
       }`}>
         <div class="flex justify-between items-center px-4 py-3">
