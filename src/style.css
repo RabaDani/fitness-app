@@ -7,7 +7,7 @@
 	line-height: 1.5;
 	font-weight: 400;
 	color: #222;
-	background-color: #ffffff;
+	background-color: #eff6ff;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -15,25 +15,38 @@
 	-webkit-text-size-adjust: 100%;
 }
 
+:root.dark {
+	background-color: #111827;
+	color: #f9fafb;
+}
+
 * {
 	box-sizing: border-box;
-	/* border: 1px dashed red !important; */ 
+}
+
+html {
+	background-color: #eff6ff;
+	scroll-behavior: smooth;
+}
+
+html.dark {
+	background-color: #111827;
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	min-height: 100vh;
+	background-color: #eff6ff;
+}
+
+body.dark {
+	background-color: #111827;
 }
 
 #app {
 	width: 100%;
 	min-height: 100vh;
-}
-
-/* Smooth scrolling */
-html {
-	scroll-behavior: smooth;
 }
 
 /* Custom scrollbar */
