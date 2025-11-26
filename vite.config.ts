@@ -71,7 +71,7 @@ export default defineConfig(({ command }) => ({
 			}
 		})
 	],
-	base: command === 'build' ? '/fitness-app/' : '/',
+	base: '/',
 	build: {
 		outDir: 'dist',
 		assetsDir: 'assets',
