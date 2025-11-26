@@ -349,6 +349,27 @@ html {
 	}
 }
 
+/* ============================================
+   Safe Area Support for Notched Devices
+   ============================================ */
+@layer utilities {
+	.safe-area-inset-bottom {
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+
+	.safe-area-inset-top {
+		padding-top: env(safe-area-inset-top);
+	}
+
+	.safe-area-inset-left {
+		padding-left: env(safe-area-inset-left);
+	}
+
+	.safe-area-inset-right {
+		padding-right: env(safe-area-inset-right);
+	}
+}
+
 /* Keyframes for animations */
 @keyframes fadeIn {
 	from {

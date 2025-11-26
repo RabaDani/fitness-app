@@ -30,11 +30,13 @@ export function Navigation({
     if (!metaThemeColor) return;
 
     if (isScrolled) {
-      // Scrolled: solid white/gray-800
-      const scrolledColor = darkMode ? '#1f2937' : '#ffffff';
+      // Scrolled: semi-transparent backdrop blur effect (rgba with 70% opacity)
+      const scrolledColor = darkMode
+        ? 'rgba(31, 41, 55, 0.7)'   // gray-800/70
+        : 'rgba(255, 255, 255, 0.7)'; // white/70
       metaThemeColor.setAttribute('content', scrolledColor);
     } else {
-      // Not scrolled: transparent bg-blue-50/gray-900
+      // Not scrolled: fully opaque background colors
       const transparentColor = darkMode ? '#111827' : '#eff6ff';
       metaThemeColor.setAttribute('content', transparentColor);
     }
@@ -52,9 +54,9 @@ export function Navigation({
   return (
     <>
       {/* Desktop Navigation - Top */}
-      <nav class={`hidden lg:block sticky top-0 z-40 ${
+      <nav class={`hidden lg:block sticky top-0 z-50 ${
         isScrolled
-          ? 'bg-white dark:bg-gray-800 shadow-md'
+          ? 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl shadow-md'
           : 'bg-blue-50 dark:bg-gray-900'
       }`}>
         <div class="container mx-auto px-4">
@@ -119,9 +121,9 @@ export function Navigation({
       </nav>
 
       {/* Mobile Header - Top (Logo and Theme Toggle) */}
-      <div class={`lg:hidden sticky top-0 z-40 ${
+      <div class={`lg:hidden sticky top-0 z-50 ${
         isScrolled
-          ? 'bg-white dark:bg-gray-800 shadow-md'
+          ? 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl shadow-md'
           : 'bg-blue-50 dark:bg-gray-900'
       }`}>
         <div class="flex justify-between items-center px-4 py-3">
