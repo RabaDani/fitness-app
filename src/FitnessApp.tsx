@@ -12,7 +12,6 @@ import { useGamification } from './hooks/useGamification';
 import { useDailyReset } from './hooks/useDailyReset';
 import { useSwipe } from './hooks/useSwipe';
 import { useToast } from './hooks/useToast';
-import { useNotificationScheduler } from './hooks/useNotificationScheduler';
 import { Profile, Meal, Food, DailyHistory, Exercise, ExerciseTemplate, WeightEntry, UserStats } from './types';
 import { initialFoodsDB, defaultUserStats } from './utils/constants/database';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -63,7 +62,6 @@ function FitnessApp() {
   const [foodsDB, setFoodsDB] = useLocalStorage<Food[]>('foodsDB', initialFoodsDB);
   const [favorites, setFavorites] = useLocalStorage<Food[]>('favorites', []);
   const [customExercises, setCustomExercises] = useLocalStorage<ExerciseTemplate[]>('customExercises', []);
-  const [notificationReminders, setNotificationReminders] = useLocalStorage<boolean>('notificationReminders', false);
 
   // Apply dark mode class to HTML element
   useDarkMode(darkMode);
@@ -76,9 +74,6 @@ function FitnessApp() {
 
   // Automatically track gamification stats and achievements
   useGamification(dailyMeals, dailyExercises, dailyHistory, userStats, setUserStats);
-
-  // Schedule daily notification reminders
-  useNotificationScheduler(notificationReminders);
 
   // View navigation order for swipe gestures
   const viewOrder: Array<'dashboard' | 'meals' | 'exercise' | 'weight' | 'stats' | 'profile'> =
@@ -142,11 +137,9 @@ function FitnessApp() {
     setFavorites,
     customExercises,
     setCustomExercises,
-    notificationReminders,
-    setNotificationReminders,
     showSuccess,
     showError
-  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, notificationReminders, setNotificationReminders, showSuccess, showError]);
+  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, showSuccess, showError]);
 
   // Show profile setup if no profile exists
   if (!profile) {

@@ -1,10 +1,9 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
 import { ConfirmationModal } from '../shared';
-import { EditProfileModal, ProfileField, NutritionCard, NotificationSettings } from '../features/profile';
+import { EditProfileModal, ProfileField, NutritionCard } from '../features/profile';
 import { activityLabels, goalLabels } from '../../utils/constants/ui';
 import { initialFoodsDB } from '../../utils/constants/database';
 
@@ -15,7 +14,7 @@ import { initialFoodsDB } from '../../utils/constants/database';
 export function ProfileView() {
   const { profile, setProfile, setUserStats } = useProfile();
   const { setDailyMeals, setDailyHistory, weightHistory, setWeightHistory, setDailyExercises } = useData();
-  const { setCustomExercises, setFavorites, setFoodsDB, notificationReminders, setNotificationReminders, showSuccess, showError } = useSettings();
+  const { setCustomExercises, setFavorites, setFoodsDB } = useSettings();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -120,25 +119,15 @@ export function ProfileView() {
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Notification Settings */}
-        <NotificationSettings
-          remindersEnabled={notificationReminders}
-          onRemindersChange={setNotificationReminders}
-          showSuccess={showSuccess}
-          showError={showError}
-        />
-
-        {/* Danger zone */}
-        <div class="card">
-          <h2 class="heading-2 mb-4 text-red-600">Veszélyes zóna</h2>
-          <p class="mb-4 text-secondary">
-            Az összes adat törlése az alkalmazásból. Ez a művelet nem visszavonható!
-          </p>
-          <button onClick={handleReset} class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
-            Minden adat törlése
-          </button>
-        </div>
+      {/* Danger zone */}
+      <div class="card">
+        <h2 class="heading-2 mb-4 text-red-600">Veszélyes zóna</h2>
+        <p class="mb-4 text-secondary">
+          Az összes adat törlése az alkalmazásból. Ez a művelet nem visszavonható!
+        </p>
+        <button onClick={handleReset} class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+          Minden adat törlése
+        </button>
       </div>
 
       {/* Edit Profile Modal */}
