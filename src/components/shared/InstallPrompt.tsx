@@ -15,29 +15,32 @@ export function InstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
-    // Check if user has dismissed the prompt
-    const dismissed = localStorage.getItem('install-prompt-dismissed');
-    if (dismissed === 'true') return;
+    // Listen for beforeinstallprompt event
+    const handler = (e: Event) => {
+      // Check if user has dismissed the prompt
+      const dismissed = localStorage.getItem('install-prompt-dismissed');
+      if (dismissed === 'true') return;
 
-    // Track visit count
-    const visits = Number.parseInt(localStorage.getItem('app-visits') || '0', 10);
-    localStorage.setItem('app-visits', (visits + 1).toString());
+      // Track visit count
+      const visits = Number.parseInt(localStorage.getItem('app-visits') || '0', 10);
 
-    // Show prompt after 3 visits
-    if (visits >= 2) {
-      // Listen for beforeinstallprompt event
-      const handler = (e: Event) => {
+      // Show prompt after 3 visits
+      if (visits >= 2) {
+        // Only prevent default if we're actually going to show our custom prompt
         e.preventDefault();
         setDeferredPrompt(e as BeforeInstallPromptEvent);
         setShowPrompt(true);
-      };
+      }
 
-      globalThis.addEventListener('beforeinstallprompt', handler);
+      // Increment visit count AFTER checking
+      localStorage.setItem('app-visits', (visits + 1).toString());
+    };
 
-      return () => {
-        globalThis.removeEventListener('beforeinstallprompt', handler);
-      };
-    }
+    globalThis.addEventListener('beforeinstallprompt', handler);
+
+    return () => {
+      globalThis.removeEventListener('beforeinstallprompt', handler);
+    };
   }, []);
 
   const handleInstall = async () => {

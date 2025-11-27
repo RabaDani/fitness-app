@@ -64,3 +64,10 @@ export const exerciseCategoryLabels = {
 export const dayNames = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat'];
 
 export const SPOONACULAR_API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY || '';
+
+// Debug: Check if API key is loaded
+if (SPOONACULAR_API_KEY) {
+  console.log('✅ Spoonacular API key loaded:', SPOONACULAR_API_KEY.substring(0, 8) + '...');
+} else {
+  console.warn('⚠️ Spoonacular API key is missing!');
+}
