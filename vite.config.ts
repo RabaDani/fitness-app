@@ -50,7 +50,7 @@ export default defineConfig(({ command }) => ({
 						}
 					},
 					{
-						urlPattern: /^https:\/\/spoonacular\.com\/cdn\/.*/i,
+						urlPattern: /^https:\/\/img\.spoonacular\.com\/.*/i,
 						handler: 'CacheFirst',
 						options: {
 							cacheName: 'spoonacular-images-cache',
