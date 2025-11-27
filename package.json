@@ -4,6 +4,7 @@
 	"scripts": {
 		"start": "vite",
 		"build": "vite build",
+		"build:ghpages": "vite build --base /fitness-app/",
 		"preview": "vite preview"
 	},
 	"dependencies": {

@@ -34,7 +34,7 @@ jobs:
       - name: Build
         env:
           VITE_SPOONACULAR_API_KEY: ${{ secrets.VITE_SPOONACULAR_API_KEY }}
-        run: npm run build
+        run: npm run build:ghpages
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

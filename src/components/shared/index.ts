@@ -17,4 +17,3 @@ export * from './SkeletonCard';
 export * from './SkeletonList';
 export * from './SkeletonChart';
 export * from './EmptyState';
-export * from './PullToRefreshIndicator';

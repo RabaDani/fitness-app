@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import { useMemo, useCallback } from 'preact/hooks';
+import { useMemo } from 'preact/hooks';
 import {
   LineChart,
   Line,
@@ -15,14 +14,11 @@ import {
 import { Calendar } from 'lucide-preact';
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';
-import { useSettings } from '../../context/SettingsContext';
 import { StatCard } from '../features/statistics';
-import { PullToRefreshIndicator } from '../shared';
 import { ChartData } from '../../types';
 import { dayNames } from '../../utils/constants/ui';
 import { getChartColors } from '../../utils/chartColors';
 import { getDateString } from '../../utils/dateHelpers';
-import { usePullToRefresh } from '../../hooks/usePullToRefresh';
 
 /**
  * Statistics view with weekly charts and trends
@@ -31,25 +27,6 @@ import { usePullToRefresh } from '../../hooks/usePullToRefresh';
 export function Statistics() {
   const { profile } = useProfile();
   const { dailyHistory, dailyMeals } = useData();
-  const { showSuccess } = useSettings();
-
-  /**
-   * Handle pull-to-refresh action
-   * In a real app, this could re-fetch data from a server
-   */
-  const handleRefresh = useCallback(async () => {
-    // Simulate a refresh delay for better UX
-    await new Promise(resolve => setTimeout(resolve, 800));
-    showSuccess('Statisztikák frissítve!');
-  }, [showSuccess]);
-
-  // Setup pull-to-refresh
-  const { containerRef, isPulling, isRefreshing, pullDistance } = usePullToRefresh<HTMLDivElement>({
-    onRefresh: handleRefresh,
-    threshold: 80,
-    maxPullDistance: 120,
-    enabled: true
-  });
 
   /**
    * Generate weekly data from actual history
@@ -91,18 +68,8 @@ export function Statistics() {
   const loggedDays = useMemo(() => dailyHistory.length, [dailyHistory]);
 
   return (
-    <>
-      {/* Pull to refresh indicator */}
-      {(isPulling || isRefreshing) && (
-        <PullToRefreshIndicator
-          pullDistance={pullDistance}
-          threshold={80}
-          isRefreshing={isRefreshing}
-        />
-      )}
-
-      <div ref={containerRef} class="space-y-6 overflow-auto">
-        <h1 class="heading-1">Statisztikák</h1>
+    <div class="space-y-6">
+      <h1 class="heading-1">Statisztikák</h1>
 
       {/* Summary stats at the top */}
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -237,7 +204,6 @@ export function Statistics() {
           </div>
         </div>
       )}
-      </div>
-    </>
+    </div>
   );
 };
