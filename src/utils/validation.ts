@@ -38,6 +38,7 @@ export const VALIDATION_CONSTRAINTS = {
   height: { min: 100, max: 250 }, // cm
   weight: { min: 30, max: 300 }, // kg
   goalWeight: { min: 30, max: 300 }, // kg
+  waterGoal: { min: 500, max: 5000 }, // ml per day
   calories: { min: 500, max: 10000 }, // kcal per day
   macros: {
     protein: { min: 0, max: 500 }, // g
@@ -164,6 +165,35 @@ export function validateGoalWeight(goalWeight: number, options: ValidationOption
 }
 
 /**
+ * Validate water goal
+ */
+export function validateWaterGoal(waterGoal: number, options: ValidationOptions = {}): boolean | void {
+  try {
+    if (!Number.isFinite(waterGoal)) {
+      throw new ValidationError('A folyadék cél érvénytelen szám');
+    }
+
+    // If partial input is allowed, skip range validation for incomplete values
+    if (options.allowPartial && waterGoal > 0 && waterGoal < VALIDATION_CONSTRAINTS.waterGoal.min) {
+      if (options.silent) return true;
+      return; // Early return to skip validation for partial input
+    }
+
+    if (waterGoal < VALIDATION_CONSTRAINTS.waterGoal.min) {
+      throw new ValidationError(`A folyadék célnak legalább ${VALIDATION_CONSTRAINTS.waterGoal.min / 1000} liternek kell lennie`);
+    }
+    if (waterGoal > VALIDATION_CONSTRAINTS.waterGoal.max) {
+      throw new ValidationError(`A folyadék cél nem lehet több mint ${VALIDATION_CONSTRAINTS.waterGoal.max / 1000} liter`);
+    }
+
+    if (options.silent) return true;
+  } catch (error) {
+    if (options.silent) return false;
+    throw error;
+  }
+}
+
+/**
  * Validate calories
  */
 export function validateCalories(calories: number, options: ValidationOptions = {}): boolean | void {
@@ -224,7 +254,7 @@ export function validateProfile(
  */
 export function validateInputField(
   value: number,
-  type: 'age' | 'height' | 'weight' | 'goalWeight' | 'calories'
+  type: 'age' | 'height' | 'weight' | 'goalWeight' | 'waterGoal' | 'calories'
 ): { valid: boolean; error?: string } {
   try {
     const options: ValidationOptions = { allowPartial: true };
@@ -241,6 +271,9 @@ export function validateInputField(
         break;
       case 'goalWeight':
         validateGoalWeight(value, options);
+        break;
+      case 'waterGoal':
+        validateWaterGoal(value, options);
         break;
       case 'calories':
         validateCalories(value, options);
@@ -262,7 +295,7 @@ export function validateInputField(
  */
 export function validateInputFieldStrict(
   value: number,
-  type: 'age' | 'height' | 'weight' | 'goalWeight' | 'calories'
+  type: 'age' | 'height' | 'weight' | 'goalWeight' | 'waterGoal' | 'calories'
 ): { valid: boolean; error?: string } {
   try {
     switch (type) {
@@ -277,6 +310,9 @@ export function validateInputFieldStrict(
         break;
       case 'goalWeight':
         validateGoalWeight(value);
+        break;
+      case 'waterGoal':
+        validateWaterGoal(value);
         break;
       case 'calories':
         validateCalories(value);

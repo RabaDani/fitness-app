@@ -46,13 +46,12 @@ export function Glass({ fillPercentage, index }: GlassProps) {
         />
 
         {/* Water fill with gradient - follows trapezoid shape */}
-        {fillPercentage > 0 && (
-          <path
-            d={`M ${waterTopLeft} ${waterTopY} L ${waterTopRight} ${waterTopY} L 32 46 Q 32 51 22 51 Q 12 51 12 46 L ${waterTopLeft} ${waterTopY} Z`}
-            fill={`url(#water-gradient-${index})`}
-            class="transition-all duration-300 ease-out"
-          />
-        )}
+        <path
+          d={`M ${waterTopLeft} ${waterTopY} L ${waterTopRight} ${waterTopY} L 32 46 Q 32 51 22 51 Q 12 51 12 46 L ${waterTopLeft} ${waterTopY} Z`}
+          fill={`url(#water-gradient-${index})`}
+          class="transition-all duration-300 ease-out"
+        />
+
 
         {/* Glass shine effect */}
         <ellipse

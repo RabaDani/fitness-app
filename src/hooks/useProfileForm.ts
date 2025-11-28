@@ -57,8 +57,42 @@ export function useProfileForm({
   };
 
   const [formData, setFormData] = useState<Profile>(defaultFormData);
-  const [autoCalculateGoal, setAutoCalculateGoal] = useState(true);
-  const [autoCalculateWater, setAutoCalculateWater] = useState(true);
+
+  // Initialize autoCalculate states based on whether initialData has custom values
+  const [autoCalculateGoal, setAutoCalculateGoal] = useState(() => {
+    if (initialData?.goalWeight && initialData?.height && initialData?.weight && initialData?.goal) {
+      try {
+        const recommendedWeight = calculateRecommendedGoalWeight(
+          initialData.height,
+          initialData.weight,
+          initialData.goal
+        );
+        // If saved goal weight differs from calculated, it's custom - don't auto-calculate
+        return Math.abs(initialData.goalWeight - recommendedWeight) < 1;
+      } catch {
+        return true;
+      }
+    }
+    return true;
+  });
+
+  const [autoCalculateWater, setAutoCalculateWater] = useState(() => {
+    if (initialData?.waterGoal && initialData?.weight && initialData?.activity) {
+      try {
+        const recommendedWater = calculateRecommendedWaterIntake(
+          initialData.weight,
+          initialData.activity
+        );
+        const diff = Math.abs(initialData.waterGoal - recommendedWater);
+        // If saved water goal differs from calculated, it's custom - don't auto-calculate
+        return diff < 50;
+      } catch {
+        return true;
+      }
+    }
+    return true;
+  });
+
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   /**
@@ -167,7 +201,7 @@ export function useProfileForm({
   const validateField = (
     field: string,
     value: number,
-    type: 'age' | 'height' | 'weight' | 'goalWeight'
+    type: 'age' | 'height' | 'weight' | 'goalWeight' | 'waterGoal'
   ): void => {
     const validation = validateInputField(value, type);
     setValidationErrors(prev => {
@@ -187,19 +221,21 @@ export function useProfileForm({
   const handleSubmit = (e?: Event): void => {
     if (e) e.preventDefault();
 
-    const { gender, age, height, weight, activity, goalWeight } = formData;
+    const { gender, age, height, weight, activity, goalWeight, waterGoal } = formData;
 
     // Strict validation before submission
     const ageValidation = validateInputFieldStrict(age, 'age');
     const heightValidation = validateInputFieldStrict(height, 'height');
     const weightValidation = validateInputFieldStrict(weight, 'weight');
     const goalWeightValidation = validateInputFieldStrict(goalWeight, 'goalWeight');
+    const waterGoalValidation = validateInputFieldStrict(waterGoal, 'waterGoal');
 
     const errors: Record<string, string> = {};
     if (!ageValidation.valid && ageValidation.error) errors.age = ageValidation.error;
     if (!heightValidation.valid && heightValidation.error) errors.height = heightValidation.error;
     if (!weightValidation.valid && weightValidation.error) errors.weight = weightValidation.error;
     if (!goalWeightValidation.valid && goalWeightValidation.error) errors.goalWeight = goalWeightValidation.error;
+    if (!waterGoalValidation.valid && waterGoalValidation.error) errors.waterGoal = waterGoalValidation.error;
 
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);

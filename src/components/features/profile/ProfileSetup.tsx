@@ -137,7 +137,7 @@ export function ProfileSetup() {
 
               {/* Water Goal */}
               <ProfileFormInput
-                label="Napi folyadék cél (L)"
+                label="Napi folyadék cél (liter)"
                 value={(formData.waterGoal || 2000) / 1000}
                 onChange={value => {
                   setAutoCalculateWater(false);

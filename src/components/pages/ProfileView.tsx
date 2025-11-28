@@ -101,7 +101,7 @@ export function ProfileView() {
             <ProfileField label="Magasság" value={`${profile.height} cm`} />
             <ProfileField label="Jelenlegi súly" value={`${currentWeight} kg`} />
             <ProfileField label="Célsúly" value={`${profile.goalWeight} kg`} />
-            <ProfileField label="Napi folyadék cél" value={`${((profile.waterGoal || 2000) / 1000).toFixed(1)} L`} />
+            <ProfileField label="Napi folyadék cél" value={`${((profile.waterGoal || 2000) / 1000).toFixed(1)} liter`} />
             <ProfileField label="Aktivitás" value={activityLabels[profile.activity]} />
             <ProfileField label="Cél" value={goalLabels[profile.goal]} />
           </div>

@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { useMemo } from 'preact/hooks';
 import { User } from 'lucide-preact';
 import { Profile } from '../../../types';
 import { useProfile } from '../../../context/ProfileContext';
@@ -9,6 +10,7 @@ import { CaloriePreview } from './CaloriePreview';
 import { MacroPreview } from './MacroPreview';
 import { ProfileFormInput, ProfileSelect, InfoNote, ModalWrapper, ModalHeader, ModalFooter } from '../../shared';
 import { useProfileForm } from '../../../hooks/useProfileForm';
+import { calculateRecommendedGoalWeight, calculateRecommendedWaterIntake } from '../../../utils/calculations';
 
 interface EditProfileModalProps {
   onClose: () => void;
@@ -46,6 +48,29 @@ export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
     trackChanges: true,
     calculatePreview: true
   });
+
+  // Calculate recommended values to show in hints when custom values are set
+  const recommendedGoalWeight = useMemo(() => {
+    if (!autoCalculateGoal && editData.height >= 100 && editData.weight >= 30) {
+      try {
+        return calculateRecommendedGoalWeight(editData.height, editData.weight, editData.goal);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }, [autoCalculateGoal, editData.height, editData.weight, editData.goal]);
+
+  const recommendedWaterGoal = useMemo(() => {
+    if (!autoCalculateWater && editData.weight >= 30) {
+      try {
+        return calculateRecommendedWaterIntake(editData.weight, editData.activity);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }, [autoCalculateWater, editData.weight, editData.activity]);
 
   return (
     <ModalWrapper maxWidth="3xl" onBackdropClick={onClose}>
@@ -90,8 +115,6 @@ export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
                     onChange={value => updateField('height', value)}
                     onValidate={value => validateField('height', value, 'height')}
                     error={validationErrors.height}
-                    min={100}
-                    max={250}
                   />
                   <ProfileFormInput
                     label="Súly (kg)"
@@ -99,54 +122,55 @@ export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
                     onChange={value => updateField('weight', value)}
                     onValidate={value => validateField('weight', value, 'weight')}
                     error={validationErrors.weight}
-                    min={30}
-                    max={300}
                   />
                 </div>
 
-                {/* Goal Weight */}
-                <ProfileFormInput
-                  label="Célsúly (kg)"
-                  value={editData.goalWeight}
-                  onChange={value => {
-                    setAutoCalculateGoal(false);
-                    updateField('goalWeight', value);
-                  }}
-                  onValidate={value => validateField('goalWeight', value, 'goalWeight')}
-                  error={validationErrors.goalWeight}
-                  hint={autoCalculateGoal ? '(ajánlott)' : '(egyéni)'}
-                  min={30}
-                  max={300}
-                />
+                <div class="grid grid-cols-2 gap-3">
+                  {/* Goal Weight */}
+                  <ProfileFormInput
+                    label="Célsúly (kg)"
+                    value={editData.goalWeight}
+                    onChange={value => {
+                      setAutoCalculateGoal(false);
+                      updateField('goalWeight', value);
+                    }}
+                    onValidate={value => validateField('goalWeight', value, 'goalWeight')}
+                    error={validationErrors.goalWeight}
+                    hint={autoCalculateGoal ? '(ajánlott)' : recommendedGoalWeight ? `(ajánlott: ${recommendedGoalWeight} kg)` : '(egyéni)'}
+                  />
 
-                {/* Goal Type */}
-                <ProfileSelect
-                  label="Cél típusa"
-                  value={editData.goal}
-                  onChange={(value) => updateField('goal', value as Profile['goal'])}
-                  options={goalLabels}
-                />
+                  {/* Water Goal */}
+                  <ProfileFormInput
+                    label="Napi folyadék (liter)"
+                    value={(editData.waterGoal || 2000) / 1000}
+                    onChange={value => {
+                      setAutoCalculateWater(false);
+                      updateField('waterGoal', value * 1000);
+                    }}
+                    onValidate={value => validateField('waterGoal', value * 1000, 'waterGoal')}
+                    error={validationErrors.waterGoal}
+                    hint={autoCalculateWater ? '(ajánlott)' : recommendedWaterGoal ? `(ajánlott: ${(recommendedWaterGoal / 1000).toFixed(1)} l)` : '(egyéni)'}
+                  />
 
-                {/* Activity */}
-                <ProfileSelect
-                  label="Aktivitási szint"
-                  value={editData.activity}
-                  onChange={(value) => updateField('activity', value as Profile['activity'])}
-                  options={activityLabels}
-                />
+                </div>
 
-                {/* Water Goal */}
-                <ProfileFormInput
-                  label="Napi folyadék cél (L)"
-                  value={(editData.waterGoal || 2000) / 1000}
-                  onChange={value => {
-                    setAutoCalculateWater(false);
-                    updateField('waterGoal', value * 1000);
-                  }}
-                  hint={autoCalculateWater ? '(személyre szabott ajánlás)' : '(egyéni)'}
-                  min={0.5}
-                  max={5}
-                />
+                <div class="grid grid-cols-2 gap-3">
+                  {/* Activity */}
+                  <ProfileSelect
+                    label="Aktivitási szint"
+                    value={editData.activity}
+                    onChange={(value) => updateField('activity', value as Profile['activity'])}
+                    options={activityLabels}
+                  />
+
+                  {/* Goal Type */}
+                  <ProfileSelect
+                    label="Cél típusa"
+                    value={editData.goal}
+                    onChange={(value) => updateField('goal', value as Profile['goal'])}
+                    options={goalLabels}
+                  />
+                </div>
               </div>
 
               {/* Right Column - Compact Preview */}
