@@ -11,6 +11,10 @@ export interface DataContextType {
   setDailyHistory: (history: DailyHistory[]) => void;
   weightHistory: WeightEntry[];
   setWeightHistory: (history: WeightEntry[]) => void;
+  dailyWater: number;
+  setDailyWater: (water: number) => void;
+  waterGoal: number;
+  setWaterGoal: (goal: number) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);

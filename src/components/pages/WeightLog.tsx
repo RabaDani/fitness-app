@@ -148,10 +148,10 @@ export function WeightLog() {
 
       </div>
 
+
       {/* Weight chart and history side by side on desktop */}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Weight chart */}
-        {weightHistory.length > 0 && (
+      {weightHistory.length > 0 ? (
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="card">
             <h2 class="heading-2 mb-4">Súly Trend</h2>
             <ResponsiveContainer width="100%" height={250}>
@@ -180,12 +180,8 @@ export function WeightLog() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-        )}
-
-        {/* Weight history list */}
-        <div class="card">
-          <h2 class="heading-2 mb-4">Mérési Napló</h2>
-          {weightHistory.length > 0 ? (
+          <div class="card">
+            <h2 class="heading-2 mb-4">Mérési Napló</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
               {[...weightHistory]
                 .sort((a, b) => b.date.localeCompare(a.date))
@@ -198,58 +194,67 @@ export function WeightLog() {
                   </SwipeableItem>
                 ))}
             </div>
-          ) : (
-            <EmptyState
-              icon={<Scale size={48} class="text-gray-400 dark:text-gray-500" />}
-              title="Még nincs rögzített súlymérés"
-              message="Kezdd el követni a súlyodat és haladj a célod felé!"
-              action={{
-                label: 'Súly rögzítése',
-                onClick: () => setShowAddModal(true)
-              }}
-            />
-          )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div class="card">
+          <EmptyState
+            icon={<Scale size={48} class="text-indigo-700 dark:text-indigo-400" />}
+            title="Még nincs rögzített súlymérés"
+            message="Kezdd el követni a súlyodat és haladj a célod felé!"
+            action={{
+              label: 'Súly rögzítése',
+              onClick: () => setShowAddModal(true)
+            }}
+          />
+        </div>
+      )}
+
 
       {/* Floating Action Button - Mobile only */}
-      <FloatingActionButton onClick={() =>
+      < FloatingActionButton onClick={() =>
         setShowAddModal(true)
       } aria-label="Súly rögzítése" />
 
-      {showAddModal && (
-        <AddWeightModal
-          onClose={() => setShowAddModal(false)}
-          onGoalReached={() => setShowGoalReachedModal(true)}
-        />
-      )}
+      {
+        showAddModal && (
+          <AddWeightModal
+            onClose={() => setShowAddModal(false)}
+            onGoalReached={() => setShowGoalReachedModal(true)}
+          />
+        )
+      }
 
-      {showGoalReachedModal && (
-        <GoalReachedModal onClose={() => setShowGoalReachedModal(false)} />
-      )}
+      {
+        showGoalReachedModal && (
+          <GoalReachedModal onClose={() => setShowGoalReachedModal(false)} />
+        )
+      }
 
-      {entryToDelete && (
-        <ConfirmationModal
-          title="Súlymérés törlése"
-          message="Biztosan törölni szeretnéd ezt a súlymérést?"
-          details={(() => {
-            const entry = weightHistory.find(e => e.date === entryToDelete);
-            if (!entry) return '';
-            const formattedDate = new Date(entry.date).toLocaleDateString('hu-HU', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            });
-            return entry.note
-              ? `${formattedDate} - ${entry.weight} kg\n${entry.note}`
-              : `${formattedDate} - ${entry.weight} kg`;
-          })()}
-          onConfirm={confirmDelete}
-          onCancel={() => setEntryToDelete(null)}
-          confirmText="Törlés"
-          cancelText="Mégse"
-        />
-      )}
-    </div>
+      {
+        entryToDelete && (
+          <ConfirmationModal
+            title="Súlymérés törlése"
+            message="Biztosan törölni szeretnéd ezt a súlymérést?"
+            details={(() => {
+              const entry = weightHistory.find(e => e.date === entryToDelete);
+              if (!entry) return '';
+              const formattedDate = new Date(entry.date).toLocaleDateString('hu-HU', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              return entry.note
+                ? `${formattedDate} - ${entry.weight} kg\n${entry.note}`
+                : `${formattedDate} - ${entry.weight} kg`;
+            })()}
+            onConfirm={confirmDelete}
+            onCancel={() => setEntryToDelete(null)}
+            confirmText="Törlés"
+            cancelText="Mégse"
+          />
+        )
+      }
+    </div >
   );
 };

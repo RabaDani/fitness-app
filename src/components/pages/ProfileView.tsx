@@ -13,7 +13,7 @@ import { initialFoodsDB } from '../../utils/constants/database';
  */
 export function ProfileView() {
   const { profile, setProfile, setUserStats } = useProfile();
-  const { setDailyMeals, setDailyHistory, weightHistory, setWeightHistory, setDailyExercises } = useData();
+  const { setDailyMeals, setDailyHistory, weightHistory, setWeightHistory, setDailyExercises, setDailyWater, setWaterGoal } = useData();
   const { setCustomExercises, setFavorites, setFoodsDB } = useSettings();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -44,6 +44,8 @@ export function ProfileView() {
       'dailyExercises',
       'dailyHistory',
       'weightHistory',
+      'dailyWater',
+      'waterGoal',
       'darkMode',
       'foodsDB',
       'favorites',
@@ -59,6 +61,8 @@ export function ProfileView() {
     setDailyHistory([]);
     setWeightHistory([]);
     setDailyExercises([]);
+    setDailyWater(0);
+    setWaterGoal(2000);
     setCustomExercises([]);
     setFavorites([]);
     setFoodsDB(initialFoodsDB);
@@ -97,6 +101,7 @@ export function ProfileView() {
             <ProfileField label="Magasság" value={`${profile.height} cm`} />
             <ProfileField label="Jelenlegi súly" value={`${currentWeight} kg`} />
             <ProfileField label="Célsúly" value={`${profile.goalWeight} kg`} />
+            <ProfileField label="Napi folyadék cél" value={`${((profile.waterGoal || 2000) / 1000).toFixed(1)} L`} />
             <ProfileField label="Aktivitás" value={activityLabels[profile.activity]} />
             <ProfileField label="Cél" value={goalLabels[profile.goal]} />
           </div>
@@ -115,6 +120,12 @@ export function ProfileView() {
             <NutritionCard title="Fehérje" value={profile.macros.protein} unit="g" color="bg-blue-50" />
             <NutritionCard title="Szénhidrát" value={profile.macros.carbs} unit="g" color="bg-green-50" />
             <NutritionCard title="Zsír" value={profile.macros.fat} unit="g" color="bg-orange-50" />
+            <NutritionCard
+              title="Folyadék"
+              value={(profile.waterGoal || 2000) / 1000}
+              unit=" L"
+              color="bg-cyan-50"
+            />
           </div>
         </div>
       </div>

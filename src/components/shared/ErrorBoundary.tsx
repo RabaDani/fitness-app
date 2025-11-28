@@ -91,7 +91,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               </button>
 
               <button
-                onClick={() => window.location.reload()}
+                onClick={() => globalThis.location.reload()}
                 class="btn-secondary flex-1 py-3"
               >
                 Oldal újratöltése

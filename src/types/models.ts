@@ -33,6 +33,7 @@ export interface Profile {
     carbs: number; // grams
     fat: number; // grams
   };
+  waterGoal?: number; // Daily water goal in ml (optional, default: 2000ml)
 }
 
 // ============================================================================

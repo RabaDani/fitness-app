@@ -43,3 +43,17 @@ export const activityMultipliers = {
   active: 1.725,
   veryActive: 1.9
 } as const;
+
+export const WATER_CONSTANTS = {
+  BASE_ML_PER_KG: 35, // Base water intake: 35ml per kg body weight
+  ACTIVITY_MULTIPLIERS: {
+    sedentary: 1.0,
+    light: 1.1,
+    moderate: 1.2,
+    active: 1.3,
+    veryActive: 1.4
+  },
+  ROUND_TO_ML: 250, // Round to nearest 250ml (half glass)
+  MIN_WATER_ML: 1500, // Minimum 1.5L per day
+  MAX_WATER_ML: 5000 // Maximum 5L per day
+} as const;

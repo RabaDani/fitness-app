@@ -33,7 +33,7 @@ export function ProfileFormInput({
   labelClass
 }: ProfileFormInputProps) {
   const handleInput = (e: Event): void => {
-    const inputValue = parseInt((e.target as HTMLInputElement).value) || 0;
+    const inputValue = parseFloat((e.target as HTMLInputElement).value) || 0;
     onChange(inputValue);
     if (onValidate) {
       onValidate(inputValue);
@@ -58,6 +58,7 @@ export function ProfileFormInput({
         type="number"
         value={value}
         onInput={handleInput}
+        step="any"
         class={error ? 'input-field-error' : inputClass}
       />
       {error && (

@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { Plus, Flame, Dumbbell } from 'lucide-preact';
+import { Plus, Flame, Dumbbell, Zap } from 'lucide-preact';
 import { Exercise } from '../../types';
 import { useData } from '../../context/DataContext';
 import { useSettings } from '../../context/SettingsContext';
@@ -72,17 +72,20 @@ export function ExerciseLog() {
     { id: 'sports', label: exerciseCategoryLabels.sports }
   ];
 
+  // Check if there are no exercises at all
+  const hasNoExercises = dailyExercises.length === 0;
+
   return (
     <div class="space-y-6">
       <div class="flex justify-between items-center">
         <h1 class="heading-1">Edzésnapló</h1>
-        <button
-          onClick={() => setShowAddModal(true)}
-          class="btn-primary hidden lg:flex items-center space-x-2"
-        >
-          <Plus size={20} />
-          <span>Edzés hozzáadása</span>
-        </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            class="btn-primary hidden lg:flex items-center space-x-2"
+          >
+            <Plus size={20} />
+            <span>Edzés hozzáadása</span>
+          </button>
       </div>
 
       {/* Total calories burned card */}
@@ -95,54 +98,71 @@ export function ExerciseLog() {
           <Flame size={48} class="opacity-80 text-yellow-300" />
         </div>
       </div>
-
-      {/* Exercise categories in grid layout on desktop */}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {categories.map(category => {
-          return (
-            <div key={category.id} class="card">
-              <h2 class="heading-2 mb-4">
-                {category.label}
-              </h2>
-              {dailyExercises.filter(ex => ex.category === category.id).length > 0 ? (
-                <div class="space-y-2">
-                  {dailyExercises.map((exercise, absoluteIndex) =>
-                    exercise.category === category.id ? (
-                      <SwipeableItem
-                        key={absoluteIndex}
-                        onDelete={() => deleteExerciseDirectly(absoluteIndex)}
-                      >
-                        <ExerciseCard
-                          exercise={exercise}
-                          onRemove={() => removeExercise(absoluteIndex)}
-                        />
-                      </SwipeableItem>
-                    ) : null
+      {hasNoExercises ? (
+        /* Empty state when no exercises logged */
+        <div class="card">
+          <EmptyState
+            icon={<Zap size={48} class="text-orange-600 dark:text-orange-400" />}
+            title="Ideje mozogni!"
+            message="Még nem rögzítettél egyetlen edzést sem ma. Kezdj el mozogni, égess kalóriákat és érezd magad energikusabbnak!"
+            action={{
+              label: 'Első edzés hozzáadása',
+              onClick: () => setShowAddModal(true)
+            }}
+          />
+        </div>
+      ) : (
+        <>
+          {/* Exercise categories in grid layout on desktop */}
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {categories.map(category => {
+              return (
+                <div key={category.id} class="card">
+                  <h2 class="heading-2 mb-4">
+                    {category.label}
+                  </h2>
+                  {dailyExercises.some(ex => ex.category === category.id) ? (
+                    <div class="space-y-2">
+                      {dailyExercises.map((exercise, absoluteIndex) =>
+                        exercise.category === category.id ? (
+                          <SwipeableItem
+                            key={absoluteIndex}
+                            onDelete={() => deleteExerciseDirectly(absoluteIndex)}
+                          >
+                            <ExerciseCard
+                              exercise={exercise}
+                              onRemove={() => removeExercise(absoluteIndex)}
+                            />
+                          </SwipeableItem>
+                        ) : null
+                      )}
+                    </div>
+                  ) : (
+                    <EmptyState
+                      icon={<Dumbbell size={40} class="text-gray-400 dark:text-gray-500" />}
+                      title="Nincs rögzített edzés"
+                      message="Rögzítsd az edzésedet és kövesd nyomon a kalóriaégetést!"
+                      action={{
+                        label: 'Edzés hozzáadása',
+                        onClick: () => {
+                          setSelectedCategory(category.id);
+                          setShowAddModal(true);
+                        }
+                      }}
+                    />
                   )}
                 </div>
-              ) : (
-                <EmptyState
-                  icon={<Dumbbell size={40} class="text-gray-400 dark:text-gray-500" />}
-                  title="Nincs rögzített edzés"
-                  message="Rögzítsd az edzésedet és kövesd nyomon a kalóriaégetést!"
-                  action={{
-                    label: 'Edzés hozzáadása',
-                    onClick: () => {
-                      setSelectedCategory(category.id);
-                      setShowAddModal(true);
-                    }
-                  }}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       {/* Floating Action Button - Mobile only */}
-      < FloatingActionButton onClick={() =>
-        setShowAddModal(true)
-      } aria-label="Edzés hozzáadása" />
+      <FloatingActionButton
+        onClick={() => setShowAddModal(true)}
+        aria-label="Edzés hozzáadása"
+      />
 
       {showAddModal && (
         <AddExerciseModal

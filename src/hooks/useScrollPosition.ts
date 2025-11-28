@@ -9,15 +9,15 @@ export function useScrollPosition(threshold: number = 10): boolean {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop = globalThis.pageYOffset || document.documentElement.scrollTop;
       setIsScrolled(scrollTop > threshold);
     };
 
     // Check initial position
     handleScroll();
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    globalThis.addEventListener('scroll', handleScroll, { passive: true });
+    return () => globalThis.removeEventListener('scroll', handleScroll);
   }, [threshold]);
 
   return isScrolled;

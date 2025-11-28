@@ -8,11 +8,13 @@ import { getTodayString } from '../utils/dateHelpers';
  * Keeps track of the last 30 days of nutritional and exercise data
  * @param dailyMeals - Current day's meals
  * @param dailyExercises - Current day's exercises
+ * @param dailyWater - Current day's water intake in ml
  * @param setDailyHistory - Function to update history (supports functional updates)
  */
 export function useDailyHistory(
   dailyMeals: Meal[],
   dailyExercises: Exercise[],
+  dailyWater: number,
   setDailyHistory: (history: DailyHistory[] | ((prev: DailyHistory[]) => DailyHistory[])) => void
 ): void {
   useEffect(() => {
@@ -33,14 +35,15 @@ export function useDailyHistory(
       const newHistory = prevHistory.filter((h: DailyHistory) => h.date !== today);
 
       // Only add today's entry if there's data to record
-      if (dailyMeals.length > 0 || dailyExercises.length > 0) {
+      if (dailyMeals.length > 0 || dailyExercises.length > 0 || dailyWater > 0) {
         newHistory.push({
           date: today,
           ...mealTotals,
           meals: [...dailyMeals],
           exercises: [...dailyExercises],
           caloriesBurned,
-          netCalories
+          netCalories,
+          water: dailyWater
         });
       }
 
@@ -49,5 +52,5 @@ export function useDailyHistory(
         .sort((a: DailyHistory, b: DailyHistory) => b.date.localeCompare(a.date))
         .slice(0, 30);
     });
-  }, [dailyMeals, dailyExercises, setDailyHistory]);
+  }, [dailyMeals, dailyExercises, dailyWater, setDailyHistory]);
 }

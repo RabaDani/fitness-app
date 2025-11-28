@@ -35,6 +35,7 @@ export interface DailyHistory {
   caloriesBurned: number;
   netCalories: number; // calories - caloriesBurned
   weight?: number; // optional daily weight log
+  water?: number; // optional daily water intake in ml
 }
 
 /**
@@ -52,6 +53,7 @@ export interface ChartData {
     carbs: number;
     fat: number;
   };
+  water?: number; // Water intake in ml
 }
 
 // ============================================================================

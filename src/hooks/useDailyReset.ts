@@ -1,26 +1,30 @@
 import { useEffect, useRef } from 'preact/hooks';
 import { Meal, Exercise } from '../types';
 import { getTodayString } from '../utils/dateHelpers';
+import { useLocalStorage } from './useLocalStorage';
 
 /**
  * Custom hook to automatically reset daily data when a new day begins
- * Checks localStorage for last app open date and clears meals/exercises if date changed
+ * Checks localStorage for last app open date and clears meals/exercises/water if date changed
  * Monitors page visibility and window focus to detect day changes even if app stays open
  *
  * @param dailyMeals - Current meals array
  * @param setDailyMeals - Function to update meals
  * @param dailyExercises - Current exercises array
  * @param setDailyExercises - Function to update exercises
+ * @param setDailyWater - Function to update water intake
  */
 export function useDailyReset(
   dailyMeals: Meal[],
   setDailyMeals: (meals: Meal[] | ((prev: Meal[]) => Meal[])) => void,
   dailyExercises: Exercise[],
-  setDailyExercises: (exercises: Exercise[] | ((prev: Exercise[]) => Exercise[])) => void
+  setDailyExercises: (exercises: Exercise[] | ((prev: Exercise[]) => Exercise[])) => void,
+  setDailyWater: (water: number | ((prev: number) => number)) => void
 ): void {
   // Use refs to track current values without triggering re-renders
   const mealsRef = useRef(dailyMeals);
   const exercisesRef = useRef(dailyExercises);
+  const [lastOpenDate, setLastOpenDate] = useLocalStorage('lastAppOpenDate', '');
 
   // Update refs when values change
   useEffect(() => {
@@ -34,7 +38,6 @@ export function useDailyReset(
      */
     const checkAndResetIfNewDay = () => {
       const today = getTodayString();
-      const lastOpenDate = localStorage.getItem('lastAppOpenDate');
 
       // If this is a new day and there was a previous date
       if (lastOpenDate && lastOpenDate !== today) {
@@ -51,10 +54,16 @@ export function useDailyReset(
           }
           return current;
         });
+        setDailyWater((current) => {
+          if (current > 0) {
+            return 0;
+          }
+          return current;
+        });
       }
 
       // Update last open date
-      localStorage.setItem('lastAppOpenDate', today);
+      setLastOpenDate(today);
     };
 
     // Check on mount
@@ -76,15 +85,15 @@ export function useDailyReset(
     const intervalId = setInterval(checkAndResetIfNewDay, 5 * 60 * 1000); // 5 minutes
 
     // Add event listeners
-    window.addEventListener('focus', handleFocus);
+    globalThis.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Cleanup
     return () => {
       clearInterval(intervalId);
-      window.removeEventListener('focus', handleFocus);
+      globalThis.removeEventListener('focus', handleFocus);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-    // Only depend on setters, not on the data itself to prevent memory leak
-  }, [setDailyMeals, setDailyExercises]);
+    // Only depend on setters and lastOpenDate, not on the data itself to prevent memory leak
+  }, [setDailyMeals, setDailyExercises, setDailyWater, lastOpenDate, setLastOpenDate]);
 }

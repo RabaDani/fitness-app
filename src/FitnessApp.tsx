@@ -56,6 +56,8 @@ function FitnessApp() {
   const [dailyExercises, setDailyExercises] = useLocalStorage<Exercise[]>('dailyExercises', []);
   const [dailyHistory, setDailyHistory] = useLocalStorage<DailyHistory[]>('dailyHistory', []);
   const [weightHistory, setWeightHistory] = useLocalStorage<WeightEntry[]>('weightHistory', []);
+  const [dailyWater, setDailyWater] = useLocalStorage<number>('dailyWater', 0);
+  const [waterGoal, setWaterGoal] = useLocalStorage<number>('waterGoal', 2000);
 
   // Settings Context State
   const [darkMode, setDarkMode] = useLocalStorage<boolean>('darkMode', false);
@@ -65,12 +67,27 @@ function FitnessApp() {
 
   // Apply dark mode class to HTML element
   useDarkMode(darkMode);
-  
+
+  // Sync water goal from profile when profile changes
+  useEffect(() => {
+    if (profile?.waterGoal && profile.waterGoal !== waterGoal) {
+      setWaterGoal(profile.waterGoal);
+    }
+  }, [profile?.waterGoal]);
+
+  // Reset water data when profile is deleted (becomes null)
+  useEffect(() => {
+    if (!profile) {
+      setDailyWater(0);
+      setWaterGoal(2000);
+    }
+  }, [profile]);
+
   // Automatically reset daily data when a new day begins
-  useDailyReset(dailyMeals, setDailyMeals, dailyExercises, setDailyExercises);
+  useDailyReset(dailyMeals, setDailyMeals, dailyExercises, setDailyExercises, setDailyWater);
 
   // Automatically update history when meals or exercises change
-  useDailyHistory(dailyMeals, dailyExercises, setDailyHistory);
+  useDailyHistory(dailyMeals, dailyExercises, dailyWater, setDailyHistory);
 
   // Automatically track gamification stats and achievements
   useGamification(dailyMeals, dailyExercises, dailyHistory, userStats, setUserStats);
@@ -125,8 +142,12 @@ function FitnessApp() {
     dailyHistory,
     setDailyHistory,
     weightHistory,
-    setWeightHistory
-  }), [dailyMeals, setDailyMeals, dailyExercises, setDailyExercises, dailyHistory, setDailyHistory, weightHistory, setWeightHistory]);
+    setWeightHistory,
+    dailyWater,
+    setDailyWater,
+    waterGoal,
+    setWaterGoal
+  }), [dailyMeals, setDailyMeals, dailyExercises, setDailyExercises, dailyHistory, setDailyHistory, weightHistory, setWeightHistory, dailyWater, setDailyWater, waterGoal, setWaterGoal]);
 
   const settingsValue = useMemo(() => ({
     darkMode,

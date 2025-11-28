@@ -23,13 +23,15 @@ export function ProfileSetup() {
     validationErrors,
     autoCalculateGoal,
     setAutoCalculateGoal,
+    autoCalculateWater,
+    setAutoCalculateWater,
     preview,
     handleSubmit
   } = useProfileForm({
     initialData: {},
     onSubmit: setProfile,
     trackChanges: false,
-    calculatePreview: true  
+    calculatePreview: true
   });
 
   return (
@@ -131,6 +133,20 @@ export function ProfileSetup() {
                 value={formData.goal}
                 onChange={(value) => updateField('goal', value as Profile['goal'])}
                 options={goalLabels}
+              />
+
+              {/* Water Goal */}
+              <ProfileFormInput
+                label="Napi folyadék cél (L)"
+                value={(formData.waterGoal || 2000) / 1000}
+                onChange={value => {
+                  setAutoCalculateWater(false);
+                  updateField('waterGoal', value * 1000);
+                }}
+                hint={autoCalculateWater ? '(személyre szabott ajánlás)' : '(egyéni)'}
+                min={0.5}
+                max={5}
+                darkMode={darkMode}
               />
             </div>
 

@@ -5,7 +5,8 @@ import {
   MIFFLIN_ST_JEOR,
   CALORIE_ADJUSTMENT,
   MACRO_CONSTANTS,
-  BMI_CONSTANTS
+  BMI_CONSTANTS,
+  WATER_CONSTANTS
 } from './constants';
 
 /**
@@ -239,4 +240,37 @@ export function calculatePercentage(
 ): string {
   if (total === 0) return '0';
   return ((value / total) * 100).toFixed(decimals);
+}
+
+/**
+ * Calculate recommended daily water intake based on body weight and activity level
+ * Formula: Base (35ml per kg) × Activity multiplier
+ * Rounded to nearest 250ml (half glass) for practical use
+ * @param weight - User's weight in kg
+ * @param activity - Activity level
+ * @returns Recommended daily water intake in ml
+ * @throws ValidationError if weight is invalid
+ */
+export function calculateRecommendedWaterIntake(
+  weight: number,
+  activity: Profile['activity']
+): number {
+  // Validate weight
+  validateWeight(weight);
+
+  // Base calculation: 35ml per kg body weight
+  const baseWater = weight * WATER_CONSTANTS.BASE_ML_PER_KG;
+
+  // Adjust for activity level
+  const activityMultiplier = WATER_CONSTANTS.ACTIVITY_MULTIPLIERS[activity];
+  let recommendedWater = baseWater * activityMultiplier;
+
+  // Round to nearest 250ml (half glass) for practical use
+  recommendedWater = Math.round(recommendedWater / WATER_CONSTANTS.ROUND_TO_ML) * WATER_CONSTANTS.ROUND_TO_ML;
+
+  // Ensure within safe range (1.5L - 5L)
+  recommendedWater = Math.max(WATER_CONSTANTS.MIN_WATER_ML, recommendedWater);
+  recommendedWater = Math.min(WATER_CONSTANTS.MAX_WATER_ML, recommendedWater);
+
+  return recommendedWater;
 }

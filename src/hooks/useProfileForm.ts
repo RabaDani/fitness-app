@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'preact/hooks';
 import { Profile } from '../types';
-import { calculateBMR, calculateDailyCalories, calculateMacros, calculateRecommendedGoalWeight, calculateBMI } from '../utils/calculations';
+import { calculateBMR, calculateDailyCalories, calculateMacros, calculateRecommendedGoalWeight, calculateBMI, calculateRecommendedWaterIntake } from '../utils/calculations';
 import { validateInputField, validateInputFieldStrict } from '../utils/validation';
 
 interface ProfilePreview {
@@ -52,11 +52,13 @@ export function useProfileForm({
     goal: 'maintain',
     dailyCalories: 0,
     macros: { protein: 0, carbs: 0, fat: 0 },
+    waterGoal: 2000, // Recommended daily water intake in ml
     ...initialData
   };
 
   const [formData, setFormData] = useState<Profile>(defaultFormData);
   const [autoCalculateGoal, setAutoCalculateGoal] = useState(true);
+  const [autoCalculateWater, setAutoCalculateWater] = useState(true);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   /**
@@ -76,6 +78,23 @@ export function useProfileForm({
       }
     }
   }, [formData.height, formData.weight, formData.goal, autoCalculateGoal]);
+
+  /**
+   * Auto-calculate recommended water intake based on weight and activity
+   */
+  useEffect(() => {
+    if (autoCalculateWater && formData.weight >= 30) {
+      try {
+        const recommendedWater = calculateRecommendedWaterIntake(
+          formData.weight,
+          formData.activity
+        );
+        setFormData(prev => ({ ...prev, waterGoal: recommendedWater }));
+      } catch (error) {
+        // Skip water calculation if weight is invalid
+      }
+    }
+  }, [formData.weight, formData.activity, autoCalculateWater]);
 
   /**
    * Calculate preview values (optional, for edit mode with preview)
@@ -128,7 +147,8 @@ export function useProfileForm({
            formData.weight !== defaultFormData.weight ||
            formData.goalWeight !== defaultFormData.goalWeight ||
            formData.activity !== defaultFormData.activity ||
-           formData.goal !== defaultFormData.goal;
+           formData.goal !== defaultFormData.goal ||
+           formData.waterGoal !== defaultFormData.waterGoal;
   }, [formData, defaultFormData, trackChanges]);
 
   /**
@@ -217,6 +237,8 @@ export function useProfileForm({
     validationErrors,
     autoCalculateGoal,
     setAutoCalculateGoal,
+    autoCalculateWater,
+    setAutoCalculateWater,
     preview, // null if calculatePreview is false
     hasChanges, // always true if trackChanges is false
     handleSubmit

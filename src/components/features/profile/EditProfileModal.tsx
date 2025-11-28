@@ -31,6 +31,8 @@ export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
     validationErrors,
     autoCalculateGoal,
     setAutoCalculateGoal,
+    autoCalculateWater,
+    setAutoCalculateWater,
     preview,
     hasChanges,
     handleSubmit: saveProfile
@@ -131,6 +133,19 @@ export function EditProfileModal({ onClose, profile }: EditProfileModalProps) {
                   value={editData.activity}
                   onChange={(value) => updateField('activity', value as Profile['activity'])}
                   options={activityLabels}
+                />
+
+                {/* Water Goal */}
+                <ProfileFormInput
+                  label="Napi folyadék cél (L)"
+                  value={(editData.waterGoal || 2000) / 1000}
+                  onChange={value => {
+                    setAutoCalculateWater(false);
+                    updateField('waterGoal', value * 1000);
+                  }}
+                  hint={autoCalculateWater ? '(személyre szabott ajánlás)' : '(egyéni)'}
+                  min={0.5}
+                  max={5}
                 />
               </div>
 

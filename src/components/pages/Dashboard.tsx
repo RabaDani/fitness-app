@@ -1,11 +1,13 @@
 import { h } from 'preact';
-import { useMemo } from 'preact/hooks';
+import { useMemo, useCallback } from 'preact/hooks';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { Salad, Activity } from 'lucide-preact';
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';
+import { useSettings } from '../../context/SettingsContext';
 import { StreakCounter, AchievementsBadge } from '../features/gamification';
 import { MealSummaryCard, MacroProgress } from '../features/dashboard';
+import { WaterTracker } from '../features/water';
 import { EmptyState } from '../shared';
 import { calculateTotalNutrition, calculateTotalCaloriesBurned } from '../../utils/calculations';
 import { MACRO_CONSTANTS } from '../../utils/constants';
@@ -16,9 +18,28 @@ import { MACRO_CONSTANTS } from '../../utils/constants';
  */
 export function Dashboard() {
   const { profile } = useProfile();
-  const { dailyMeals, dailyExercises } = useData();
+  const { dailyMeals, dailyExercises, dailyWater, setDailyWater, waterGoal } = useData();
+  const { showSuccess } = useSettings();
 
   if (!profile) return null;
+
+  const handleAddWater = useCallback((amount: number) => {
+    const newWaterAmount = Math.max(0, dailyWater + amount);
+    const wasGoalNotReached = dailyWater < waterGoal;
+    const isGoalReachedNow = newWaterAmount >= waterGoal;
+
+    setDailyWater(newWaterAmount);
+
+    // Show toast only when goal is reached for the first time
+    if (amount > 0 && wasGoalNotReached && isGoalReachedNow) {
+      showSuccess('Napi víz cél teljesítve! 🎉💧');
+    }
+  }, [dailyWater, waterGoal, setDailyWater, showSuccess]);
+
+  const handleResetWater = useCallback(() => {
+    setDailyWater(0);
+    showSuccess('Folyadékbevitel nullázva');
+  }, [setDailyWater, showSuccess]);
 
   /**
    * Calculate total nutritional values for all meals today
@@ -53,7 +74,7 @@ export function Dashboard() {
         <h1 class="heading-1">
           Mai Összesítő
         </h1>
-          <AchievementsBadge />
+        <AchievementsBadge />
       </div>
 
       {/* Calorie progress card and Streak counter in same row */}
@@ -87,9 +108,8 @@ export function Dashboard() {
             </div>
             <div class="w-full rounded-full h-4 bg-gray-200 dark:bg-gray-700">
               <div
-                class={`h-4 rounded-full transition-all ${
-                  progress > 100 ? 'bg-red-500' : progress > 90 ? 'bg-orange-500' : 'bg-indigo-600'
-                }`}
+                class={`h-4 rounded-full transition-all ${progress > 100 ? 'bg-red-500' : progress > 90 ? 'bg-orange-500' : 'bg-indigo-600'
+                  }`}
                 style={{ width: `${Math.min(progress, 100)}%` }}
               ></div>
             </div>
@@ -108,6 +128,45 @@ export function Dashboard() {
 
       {/* Macro distribution */}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card">
+          <h2 class="heading-2 mb-4">
+            Makrók Részletesen
+          </h2>
+          <div class="space-y-4">
+            <MacroProgress
+              label="Fehérje"
+              current={totals.protein}
+              goal={profile.macros.protein}
+              unit="g"
+              color="bg-blue-500"
+            />
+            <MacroProgress
+              label="Szénhidrát"
+              current={totals.carbs}
+              goal={profile.macros.carbs}
+              unit="g"
+              color="bg-green-500"
+            />
+            <MacroProgress
+              label="Zsír"
+              current={totals.fat}
+              goal={profile.macros.fat}
+              unit="g"
+              color="bg-orange-500"
+            />
+          </div>
+        </div>
+
+        {/* Water tracker */}
+        <WaterTracker
+          currentIntake={dailyWater}
+          dailyGoal={waterGoal}
+          onAddWater={handleAddWater}
+          onReset={handleResetWater}
+        />
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card">
           <h2 class="heading-2 mb-4">
             Makró Eloszlás
@@ -142,55 +201,27 @@ export function Dashboard() {
           )}
         </div>
 
+        {/* Today's meals summary */}
         <div class="card">
           <h2 class="heading-2 mb-4">
-            Makrók Részletesen
+            Mai Étkezések
           </h2>
-          <div class="space-y-4">
-            <MacroProgress
-              label="Fehérje"
-              current={totals.protein}
-              goal={profile.macros.protein}
-              unit="g"
-              color="bg-blue-500"
+          {dailyMeals.length > 0 ? (
+            <div class="space-y-2">
+              {dailyMeals.map((meal, idx) => (
+                <MealSummaryCard key={idx} meal={meal} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              icon={<Activity size={48} class="text-gray-400 dark:text-gray-500" />}
+              title="Még nem adtál hozzá ételt ma"
+              message="Kezdd el a napot! Menj az Étkezések fülre és rögzítsd a mai első étkezésedet."
             />
-            <MacroProgress
-              label="Szénhidrát"
-              current={totals.carbs}
-              goal={profile.macros.carbs}
-              unit="g"
-              color="bg-green-500"
-            />
-            <MacroProgress
-              label="Zsír"
-              current={totals.fat}
-              goal={profile.macros.fat}
-              unit="g"
-              color="bg-orange-500"
-            />
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Today's meals summary */}
-      <div class="card">
-        <h2 class="heading-2 mb-4">
-          Mai Étkezések
-        </h2>
-        {dailyMeals.length > 0 ? (
-          <div class="space-y-2">
-            {dailyMeals.map((meal, idx) => (
-              <MealSummaryCard key={idx} meal={meal} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            icon={<Activity size={48} class="text-gray-400 dark:text-gray-500" />}
-            title="Még nem adtál hozzá ételt ma"
-            message="Kezdd el a napot! Menj az Étkezések fülre és rögzítsd a mai első étkezésedet."
-          />
-        )}
-      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { Download, X } from 'lucide-preact';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -13,16 +14,14 @@ interface BeforeInstallPromptEvent extends Event {
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const [dismissed, setDismissed] = useLocalStorage('install-prompt-dismissed', false);
+  const [visits, setVisits] = useLocalStorage('app-visits', 0);
 
   useEffect(() => {
     // Listen for beforeinstallprompt event
     const handler = (e: Event) => {
       // Check if user has dismissed the prompt
-      const dismissed = localStorage.getItem('install-prompt-dismissed');
-      if (dismissed === 'true') return;
-
-      // Track visit count
-      const visits = Number.parseInt(localStorage.getItem('app-visits') || '0', 10);
+      if (dismissed) return;
 
       // Show prompt after 3 visits
       if (visits >= 2) {
@@ -33,7 +32,7 @@ export function InstallPrompt() {
       }
 
       // Increment visit count AFTER checking
-      localStorage.setItem('app-visits', (visits + 1).toString());
+      setVisits(visits + 1);
     };
 
     globalThis.addEventListener('beforeinstallprompt', handler);
@@ -41,7 +40,7 @@ export function InstallPrompt() {
     return () => {
       globalThis.removeEventListener('beforeinstallprompt', handler);
     };
-  }, []);
+  }, [dismissed, visits, setVisits]);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
@@ -58,7 +57,7 @@ export function InstallPrompt() {
   };
 
   const handleDismiss = () => {
-    localStorage.setItem('install-prompt-dismissed', 'true');
+    setDismissed(true);
     setShowPrompt(false);
   };
 
