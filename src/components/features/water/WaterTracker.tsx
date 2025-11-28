@@ -52,12 +52,12 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
 
       {/* Visual Glass Representation with Controls */}
       <div class="mb-4">
-        <div class="flex items-center justify-center gap-3 mb-3">
-          {/* Subtract button - left side */}
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-3 mb-3">
+          {/* Subtract button - desktop left side */}
           <button
             onClick={() => onAddWater(-halfGlassAmount)}
             disabled={!canSubtract}
-            class="btn-secondary p-3 disabled:opacity-30 flex-shrink-0"
+            class="btn-secondary p-3 disabled:opacity-30 flex-shrink-0 hidden lg:block"
             title="Fél pohár levonása"
           >
             <Minus size={20} />
@@ -83,7 +83,26 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
             })}
           </div>
 
-          {/* Add button - right side */}
+          {/* Add button - desktop right side */}
+          <button
+            onClick={() => onAddWater(halfGlassAmount)}
+            class="btn-secondary p-3 flex-shrink-0 hidden lg:block"
+            title="Fél pohár hozzáadása"
+          >
+            <Plus size={20} />
+          </button>
+        </div>
+
+        {/* Mobile buttons - below glasses, side by side */}
+        <div class="flex justify-center gap-3 mb-3 lg:hidden">
+          <button
+            onClick={() => onAddWater(-halfGlassAmount)}
+            disabled={!canSubtract}
+            class="btn-secondary p-3 disabled:opacity-30 flex-shrink-0"
+            title="Fél pohár levonása"
+          >
+            <Minus size={20} />
+          </button>
           <button
             onClick={() => onAddWater(halfGlassAmount)}
             class="btn-secondary p-3 flex-shrink-0"
