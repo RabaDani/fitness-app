@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Flame, TrendingDown, Info } from 'lucide-preact';
 import { exerciseDatabase } from '../../../utils/constants/database';
 import { UI_CONSTANTS } from '../../../utils/constants/ui';

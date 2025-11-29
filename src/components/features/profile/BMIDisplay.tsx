@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Weight } from 'lucide-preact';
 
 interface BMIDisplayProps {

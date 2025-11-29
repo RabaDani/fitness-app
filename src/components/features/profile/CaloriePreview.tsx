@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { TrendingDown, TrendingUp, Minus, Flame } from 'lucide-preact';
 
 interface CaloriePreviewProps {

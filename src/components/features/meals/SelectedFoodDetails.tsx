@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Food } from '../../../types';
 import { FoodImage } from './FoodImage';
 import { calculateNutrition, calculateTotalNutrition, calculatePercentage } from '../../../utils/calculations';

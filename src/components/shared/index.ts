@@ -2,7 +2,7 @@ export * from './ThemeToggle';
 export * from './ConfirmationModal';
 export * from './ErrorBoundary';
 export * from './ProfileFormInput';
-export * from './ProfileSelect';
+export * from '../features/profile/ProfileSelect';
 export * from './ModalWrapper';
 export * from './ModalHeader';
 export * from './ModalFooter';

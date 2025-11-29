@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useSettings } from '../../../context/SettingsContext';
 
 interface MacroProgressProps {

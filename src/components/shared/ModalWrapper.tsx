@@ -1,4 +1,4 @@
-import { h, ComponentChildren } from 'preact';
+import { ComponentChildren } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 

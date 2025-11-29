@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Info } from 'lucide-preact';
 
 interface InfoNoteProps {

@@ -1,6 +1,5 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { Trophy, Target } from 'lucide-preact';
+import { Trophy } from 'lucide-preact';
 import { useProfile } from '../../../context/ProfileContext';
 import { useData } from '../../../context/DataContext';
 

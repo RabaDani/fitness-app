@@ -101,7 +101,7 @@ function FitnessApp() {
     setProfile,
     userStats,
     setUserStats
-  }), [profile, setProfile, userStats, setUserStats]);
+  }), [profile, userStats]);
 
   const dataValue = useMemo(() => ({
     dailyMeals,
@@ -112,7 +112,7 @@ function FitnessApp() {
     setDailyHistory,
     weightHistory,
     setWeightHistory
-  }), [dailyMeals, setDailyMeals, dailyExercises, setDailyExercises, dailyHistory, setDailyHistory, weightHistory, setWeightHistory]);
+  }), [dailyMeals, dailyExercises, dailyHistory, weightHistory]);
 
   const settingsValue = useMemo(() => ({
     darkMode,
@@ -125,7 +125,7 @@ function FitnessApp() {
     setCustomExercises,
     showSuccess,
     showError
-  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, showSuccess, showError]);
+  }), [darkMode, foodsDB, favorites, customExercises, showSuccess, showError]);
 
   // Show profile setup if no profile exists
   if (!profile) {

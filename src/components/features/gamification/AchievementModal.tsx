@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { X } from 'lucide-preact';
 import { useProfile } from '../../../context/ProfileContext';
 import { achievementsDatabase } from '../../../utils/constants/database';

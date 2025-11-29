@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 interface ModalFooterProps {
   onCancel: () => void;
   onConfirm: () => void;

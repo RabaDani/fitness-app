@@ -1,5 +1,5 @@
 import { useEffect } from 'preact/hooks';
-import { CheckCircle, XCircle, X, Undo } from 'lucide-preact';
+import { CheckCircle, XCircle, X } from 'lucide-preact';
 
 export type ToastType = 'success' | 'error';
 

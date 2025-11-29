@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Moon, Sun } from 'lucide-preact';
 import { useSettings } from '../../context/SettingsContext';
 

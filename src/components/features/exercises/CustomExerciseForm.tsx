@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { UI_CONSTANTS } from '../../../utils/constants/ui';
 import { useSettings } from '../../../context/SettingsContext';
 

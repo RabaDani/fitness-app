@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Search } from 'lucide-preact';
 import { Food } from '../../../types';
 import { FoodListItem } from './FoodListItem';

@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Meal } from '../../../types';
 import { mealTypeLabels } from '../../../utils/constants';
 

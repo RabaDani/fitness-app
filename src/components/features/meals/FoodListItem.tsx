@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Heart } from 'lucide-preact';
 import { Food } from '../../../types';
 import { FoodImage } from './FoodImage';

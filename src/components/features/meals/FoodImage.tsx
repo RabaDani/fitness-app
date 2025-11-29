@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Food } from '../../../types';
 import { Salad } from 'lucide-preact';

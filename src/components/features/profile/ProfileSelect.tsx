@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 interface ProfileSelectProps<T extends string> {
   label: string;
   value: T;

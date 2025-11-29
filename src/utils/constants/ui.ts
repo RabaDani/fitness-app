@@ -5,15 +5,6 @@
 import { VALIDATION_CONSTRAINTS } from '../validation';
 
 export const UI_CONSTANTS = {
-  MODAL: {
-    WIDTH_SM: 'max-w-md',
-    WIDTH_MD: 'max-w-2xl',
-    WIDTH_LG: 'max-w-4xl',
-    HEIGHT: 'max-h-[90vh]',
-    SCROLL_HEIGHT_SM: 'max-h-64',
-    SCROLL_HEIGHT_MD: 'max-h-80',
-    SCROLL_HEIGHT_LG: 'max-h-[300px]'
-  },
   INPUT: {
     AGE_MIN: VALIDATION_CONSTRAINTS.age.min,
     AGE_MAX: VALIDATION_CONSTRAINTS.age.max,

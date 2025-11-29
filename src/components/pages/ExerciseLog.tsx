@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Plus, Flame } from 'lucide-preact';
 import { Exercise } from '../../types';

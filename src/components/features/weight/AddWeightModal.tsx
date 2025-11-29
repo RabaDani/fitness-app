@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { WeightEntry } from '../../../types';
 import { useProfile } from '../../../context/ProfileContext';

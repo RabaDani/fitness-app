@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 interface ProfileFieldProps {
   label: string;
   value: string;

@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Toast, ToastType } from './Toast';
 
 export interface ToastItem {

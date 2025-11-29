@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Flame, Trophy } from 'lucide-preact';
 import { useProfile } from '../../../context/ProfileContext';
 

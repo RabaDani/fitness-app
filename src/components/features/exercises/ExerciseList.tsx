@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { exerciseDatabase } from '../../../utils/constants/database';
 
 interface ExerciseListProps {

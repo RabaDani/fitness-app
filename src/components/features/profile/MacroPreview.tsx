@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Info, TrendingUp } from 'lucide-preact';
 import { Profile } from '../../../types';
 

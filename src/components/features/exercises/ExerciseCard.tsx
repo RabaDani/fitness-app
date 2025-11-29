@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { Trash2 } from 'lucide-preact';
 import { Exercise } from '../../../types';
 

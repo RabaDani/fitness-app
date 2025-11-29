@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useLayoutEffect } from 'preact/hooks';
 import { User, TrendingUp, House, Activity, Scale, Salad } from 'lucide-preact';
 import { ThemeToggle } from '../shared';

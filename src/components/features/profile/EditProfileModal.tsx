@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { User } from 'lucide-preact';
 import { Profile } from '../../../types';
 import { useProfile } from '../../../context/ProfileContext';

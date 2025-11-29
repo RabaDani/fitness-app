@@ -1,7 +1,5 @@
-import { h } from 'preact';
 import { Trash2 } from 'lucide-preact';
 import { WeightEntry } from '../../../types';
-import { useSettings } from '../../../context/SettingsContext';
 
 interface WeightEntryCardProps {
   entry: WeightEntry;
@@ -14,8 +12,6 @@ interface WeightEntryCardProps {
  * @param onRemove - Callback when remove button is clicked
  */
 export function WeightEntryCard({ entry, onRemove }: WeightEntryCardProps) {
-  const { darkMode } = useSettings();
-
   const formattedDate = new Date(entry.date).toLocaleDateString('hu-HU', {
     year: 'numeric',
     month: 'long',

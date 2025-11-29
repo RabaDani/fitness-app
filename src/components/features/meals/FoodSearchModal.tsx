@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import { Search, Heart } from 'lucide-preact';
 import { Food, Meal } from '../../../types';

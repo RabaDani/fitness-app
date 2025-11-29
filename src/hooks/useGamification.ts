@@ -50,18 +50,18 @@ export function useGamification(
       // Calculate longest streak
       const newLongestStreak = Math.max(newCurrentStreak, prevStats.longestStreak);
 
-      // Calculate totals from history (excluding today) + today's current data
-      const historicalCaloriesBurned = dailyHistory
+      // Calculate totals from history (excluding today) in a single pass
+      const historical = dailyHistory
         .filter(day => day.date !== today)
-        .reduce((sum, day) => sum + day.caloriesBurned, 0);
+        .reduce((acc, day) => ({
+          caloriesBurned: acc.caloriesBurned + day.caloriesBurned,
+          mealsCount: acc.mealsCount + day.meals.length,
+          exercisesCount: acc.exercisesCount + day.exercises.length
+        }), { caloriesBurned: 0, mealsCount: 0, exercisesCount: 0 });
 
-      const historicalMealsCount = dailyHistory
-        .filter(day => day.date !== today)
-        .reduce((sum, day) => sum + day.meals.length, 0);
-
-      const historicalExercisesCount = dailyHistory
-        .filter(day => day.date !== today)
-        .reduce((sum, day) => sum + day.exercises.length, 0);
+      const historicalCaloriesBurned = historical.caloriesBurned;
+      const historicalMealsCount = historical.mealsCount;
+      const historicalExercisesCount = historical.exercisesCount;
 
       const todaysCaloriesBurned = calculateTotalCaloriesBurned(dailyExercises);
 

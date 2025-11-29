@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import { Meal, Exercise } from '../types';
 import { getTodayString } from '../utils/dateHelpers';
 
@@ -18,16 +18,6 @@ export function useDailyReset(
   dailyExercises: Exercise[],
   setDailyExercises: (exercises: Exercise[] | ((prev: Exercise[]) => Exercise[])) => void
 ): void {
-  // Use refs to track current values without triggering re-renders
-  const mealsRef = useRef(dailyMeals);
-  const exercisesRef = useRef(dailyExercises);
-
-  // Update refs when values change
-  useEffect(() => {
-    mealsRef.current = dailyMeals;
-    exercisesRef.current = dailyExercises;
-  }, [dailyMeals, dailyExercises]);
-
   useEffect(() => {
     /**
      * Check if day has changed and reset data if needed

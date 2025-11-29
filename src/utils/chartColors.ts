@@ -2,6 +2,11 @@
  * Chart color utilities for dark mode support
  */
 
+/**
+ * Get chart colors based on current theme (light/dark mode)
+ * Automatically detects dark mode from document class
+ * @returns Object containing grid, axis, and tooltip colors for the current theme
+ */
 export const getChartColors = () => {
   const isDark = document.documentElement.classList.contains('dark');
   return {

@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { useProfile } from '../../context/ProfileContext';
 import { useData } from '../../context/DataContext';

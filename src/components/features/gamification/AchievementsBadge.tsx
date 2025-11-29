@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Award } from 'lucide-preact';
 import { useProfile } from '../../../context/ProfileContext';

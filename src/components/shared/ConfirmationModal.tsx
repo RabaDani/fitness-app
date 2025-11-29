@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { AlertTriangle } from 'lucide-preact';
 import { ModalWrapper, ModalHeader, ModalFooter } from '.';
 
