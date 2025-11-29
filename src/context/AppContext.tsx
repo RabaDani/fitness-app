@@ -42,6 +42,7 @@ export function useAppContext(): AppContextType {
     customExercises: settings.customExercises,
     setCustomExercises: settings.setCustomExercises,
     showSuccess: settings.showSuccess,
-    showError: settings.showError
+    showError: settings.showError,
+    showAchievement: settings.showAchievement
   };
 }

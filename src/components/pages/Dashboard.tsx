@@ -19,7 +19,7 @@ import { MACRO_CONSTANTS } from '../../utils/constants';
 export function Dashboard() {
   const { profile } = useProfile();
   const { dailyMeals, dailyExercises, dailyWater, setDailyWater, waterGoal } = useData();
-  const { showSuccess } = useSettings();
+  const { showSuccess, showAchievement } = useSettings();
 
   if (!profile) return null;
 
@@ -32,9 +32,9 @@ export function Dashboard() {
 
     // Show toast only when goal is reached for the first time
     if (amount > 0 && wasGoalNotReached && isGoalReachedNow) {
-      showSuccess('Napi víz cél teljesítve! 🎉💧');
+      showAchievement('Napi víz cél teljesítve! 🎉💧');
     }
-  }, [dailyWater, waterGoal, setDailyWater, showSuccess]);
+  }, [dailyWater, waterGoal, setDailyWater, showAchievement]);
 
   const handleResetWater = useCallback(() => {
     setDailyWater(0);

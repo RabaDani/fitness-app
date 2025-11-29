@@ -1,7 +1,8 @@
-import { useEffect } from 'preact/hooks';
-import { CheckCircle, XCircle, X, Undo } from 'lucide-preact';
+import { useEffect, useState } from 'preact/hooks';
+import { CheckCircle, XCircle, X, Trophy } from 'lucide-preact';
+import confetti from 'canvas-confetti';
 
-export type ToastType = 'success' | 'error';
+export type ToastType = 'success' | 'error' | 'achievement';
 
 export interface ToastProps {
   message: string;
@@ -13,31 +14,64 @@ export interface ToastProps {
 
 /**
  * Toast notification component
- * Displays temporary success/error messages with auto-dismiss and optional undo action
+ * Displays temporary success/error/achievement messages with auto-dismiss and optional undo action
  */
 export function Toast({ message, type, onClose, duration = 3000, onUndo }: ToastProps) {
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    // Trigger confetti when achievement is shown
+    if (type === 'achievement') {
+      confetti({
+        particleCount: 70,
+        angle: 90,
+        spread: 180,
+        startVelocity: 25,
+        origin: { x: 0.5, y: 0.15 },
+      });
+    }
+  }, [type]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose();
+      handleClose();
     }, duration);
 
     return () => clearTimeout(timer);
   }, [duration, onClose]);
 
-  const Icon = type === 'success' ? CheckCircle : XCircle;
-  const bgColor = type === 'success'
-    ? 'bg-indigo-600 dark:bg-indigo-700'
-    : 'bg-red-500 dark:bg-red-600';
+  const handleClose = () => {
+    setIsClosing(true);
+    // Wait for animation to complete before actually removing
+    setTimeout(() => {
+      onClose();
+    }, 300); // Match animation duration
+  };
+
+  // Select icon based on type
+  let Icon = CheckCircle;
+  if (type === 'error') {
+    Icon = XCircle;
+  }
+
+  // Select background color based on type
+  let bgColor = 'bg-indigo-600 dark:bg-indigo-700';
+  if (type === 'achievement') {
+    bgColor = 'bg-indigo-600 dark:bg-indigo-700';
+  } else 
+  if (type === 'error') {
+    bgColor = 'bg-red-500 dark:bg-red-600';
+  }
 
   const handleUndo = () => {
     if (onUndo) {
       onUndo();
-      onClose();
+      handleClose();
     }
   };
 
   return (
-    <div class={`${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 min-w-[240px] max-w-sm animate-slideIn`}>
+    <div class={`${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 min-w-[240px] max-w-sm ${isClosing ? 'animate-slideOut' : 'animate-slideIn'}`}>
       <Icon size={18} class="flex-shrink-0" />
       <p class="flex-1 text-xs font-medium">{message}</p>
       {onUndo ? (

@@ -1,6 +1,7 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { Trophy, Target } from 'lucide-preact';
+import confetti from 'canvas-confetti';
 import { useProfile } from '../../../context/ProfileContext';
 import { useData } from '../../../context/DataContext';
 
@@ -17,6 +18,17 @@ export function GoalReachedModal({ onClose }: GoalReachedModalProps) {
   const { weightHistory } = useData();
   const [showSetNewGoal, setShowSetNewGoal] = useState(false);
   const [newGoalWeight, setNewGoalWeight] = useState(profile?.goalWeight || 70);
+
+  // Trigger confetti when modal opens
+  useEffect(() => {
+    confetti({
+      particleCount: 100,
+      angle: 90,
+      spread: 160,
+      startVelocity: 25,
+      origin: { x: 0.5, y: 0.3 },
+    });
+  }, []);
 
   if (!profile) return null;
 

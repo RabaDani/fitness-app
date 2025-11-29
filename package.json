@@ -8,6 +8,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"canvas-confetti": "^1.9.4",
 		"lucide-preact": "^0.548.0",
 		"lucide-react": "^0.548.0",
 		"preact": "^10.26.9",

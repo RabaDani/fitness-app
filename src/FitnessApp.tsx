@@ -45,7 +45,7 @@ function FitnessApp() {
   }, [currentView]);
 
   // Toast notifications
-  const { toasts, removeToast, showSuccess, showError } = useToast();
+  const { toasts, removeToast, showSuccess, showError, showAchievement } = useToast();
 
   // Profile Context State
   const [profile, setProfile] = useLocalStorage<Profile | null>('fitnessProfile', null);
@@ -90,7 +90,7 @@ function FitnessApp() {
   useDailyHistory(dailyMeals, dailyExercises, dailyWater, setDailyHistory);
 
   // Automatically track gamification stats and achievements
-  useGamification(dailyMeals, dailyExercises, dailyHistory, userStats, setUserStats);
+  useGamification(dailyMeals, dailyExercises, dailyHistory, userStats, setUserStats, showAchievement);
 
   // View navigation order for swipe gestures
   const viewOrder: Array<'dashboard' | 'meals' | 'exercise' | 'weight' | 'stats' | 'profile'> =
@@ -159,8 +159,9 @@ function FitnessApp() {
     customExercises,
     setCustomExercises,
     showSuccess,
-    showError
-  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, showSuccess, showError]);
+    showError,
+    showAchievement
+  }), [darkMode, setDarkMode, foodsDB, setFoodsDB, favorites, setFavorites, customExercises, setCustomExercises, showSuccess, showError, showAchievement]);
 
   // Show profile setup if no profile exists
   if (!profile) {

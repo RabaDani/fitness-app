@@ -13,13 +13,15 @@ import { calculateTotalCaloriesBurned } from '../utils/calculations';
  * @param dailyHistory - Historical daily data
  * @param userStats - Current user statistics
  * @param setUserStats - Function to update user statistics
+ * @param showAchievement - Optional function to show achievement toast notifications
  */
 export function useGamification(
   dailyMeals: Meal[],
   dailyExercises: Exercise[],
   dailyHistory: DailyHistory[],
   userStats: UserStats,
-  setUserStats: (stats: UserStats | ((prev: UserStats) => UserStats)) => void
+  setUserStats: (stats: UserStats | ((prev: UserStats) => UserStats)) => void,
+  showAchievement?: (message: string) => void
 ): void {
   useEffect(() => {
     const today = getTodayString();
@@ -63,19 +65,24 @@ export function useGamification(
         .filter(day => day.date !== today)
         .reduce((sum, day) => sum + day.exercises.length, 0);
 
+      const historicalWaterLogged = dailyHistory
+        .filter(day => day.date !== today)
+        .reduce((sum, day) => sum + (day.water || 0), 0);
+
       const todaysCaloriesBurned = calculateTotalCaloriesBurned(dailyExercises);
 
       // Calculate totals including today's data
       const totalCaloriesBurned = historicalCaloriesBurned + todaysCaloriesBurned;
       const totalMealsLogged = historicalMealsCount + dailyMeals.length;
       const totalExercises = historicalExercisesCount + dailyExercises.length;
+      const totalWaterLogged = historicalWaterLogged; // Today's water is already in history
 
       // Check for newly unlocked achievements
       const newAchievements: string[] = [...prevStats.achievementsUnlocked];
 
-      achievementsDatabase.forEach(achievement => {
+      for (const achievement of achievementsDatabase) {
         // Skip if already unlocked
-        if (newAchievements.includes(achievement.id)) return;
+        if (newAchievements.includes(achievement.id)) continue;
 
         let shouldUnlock = false;
 
@@ -93,12 +100,20 @@ export function useGamification(
               shouldUnlock = totalExercises >= achievement.target;
             }
             break;
+          case 'water':
+            shouldUnlock = totalWaterLogged >= achievement.target;
+            break;
         }
 
         if (shouldUnlock) {
           newAchievements.push(achievement.id);
+
+          // Show achievement toast notification
+          if (showAchievement) {
+            showAchievement(`${achievement.name} elérve! 🎉🏆`);
+          }
         }
-      });
+      }
 
       // Update user stats - always update totals to reflect current state
       return {
@@ -107,6 +122,7 @@ export function useGamification(
         totalMealsLogged,
         totalExercises,
         totalCaloriesBurned,
+        totalWaterLogged,
         achievementsUnlocked: newAchievements,
         lastLogDate: today
       };

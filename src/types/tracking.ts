@@ -71,7 +71,7 @@ export interface Achievement {
   unlockedAt?: string;
   progress: number; // 0-100
   target: number;
-  category: 'meals' | 'exercise' | 'streak' | 'weight';
+  category: 'meals' | 'exercise' | 'streak' | 'weight' | 'water';
 }
 
 /**
@@ -83,6 +83,7 @@ export interface UserStats {
   totalMealsLogged: number;
   totalExercises: number;
   totalCaloriesBurned: number;
+  totalWaterLogged: number; // Total water logged in ml
   achievementsUnlocked: string[]; // Achievement IDs
   lastLogDate: string; // YYYY-MM-DD
 }

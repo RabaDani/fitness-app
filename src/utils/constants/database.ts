@@ -55,7 +55,10 @@ export const achievementsDatabase = [
   { id: 'exercise-25', name: 'Fitness Rajongó', description: '25 edzés teljesítve', icon: '🏋️', target: 25, category: 'exercise' as const },
   { id: 'exercise-50', name: 'Edzés Bajnok', description: '50 edzés teljesítve', icon: '🥇', target: 50, category: 'exercise' as const },
   { id: 'burn-1000', name: 'Kalória Égető', description: '1000 kcal elégetés', icon: '🔥', target: 1000, category: 'exercise' as const },
-  { id: 'burn-5000', name: 'Zsírégető Hős', description: '5000 kcal elégetés', icon: '💥', target: 5000, category: 'exercise' as const }
+  { id: 'burn-5000', name: 'Zsírégető Hős', description: '5000 kcal elégetés', icon: '💥', target: 5000, category: 'exercise' as const },
+  { id: 'water-10', name: 'Hidratáló Kezdő', description: '10 liter víz rögzítve', icon: '💧', target: 10000, category: 'water' as const },
+  { id: 'water-50', name: 'Víz Bajnok', description: '50 liter víz rögzítve', icon: '🌊', target: 50000, category: 'water' as const },
+  { id: 'water-100', name: 'Hidratációs Mester', description: '100 liter víz rögzítve', icon: '💦', target: 100000, category: 'water' as const }
 ];
 
 export const defaultUserStats = {
@@ -64,6 +67,7 @@ export const defaultUserStats = {
   totalMealsLogged: 0,
   totalExercises: 0,
   totalCaloriesBurned: 0,
+  totalWaterLogged: 0,
   achievementsUnlocked: [],
   lastLogDate: ''
 };

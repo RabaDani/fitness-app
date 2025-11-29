@@ -32,4 +32,5 @@ export interface AppContextType {
   setDarkMode: (dark: boolean) => void;
   showSuccess: (message: string, onUndo?: () => void) => void;
   showError: (message: string, onUndo?: () => void) => void;
+  showAchievement: (message: string) => void;
 }

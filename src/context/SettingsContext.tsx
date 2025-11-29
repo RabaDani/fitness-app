@@ -13,6 +13,7 @@ export interface SettingsContextType {
   setCustomExercises: (exercises: ExerciseTemplate[]) => void;
   showSuccess: (message: string, onUndo?: () => void) => void;
   showError: (message: string, onUndo?: () => void) => void;
+  showAchievement: (message: string) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);

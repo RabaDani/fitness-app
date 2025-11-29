@@ -41,6 +41,10 @@ export function AchievementModal({ onClose }: AchievementModalProps) {
         }
         progress = Math.min((currentValue / achievement.target) * 100, 100);
         break;
+      case 'water':
+        currentValue = userStats.totalWaterLogged;
+        progress = Math.min((currentValue / achievement.target) * 100, 100);
+        break;
     }
 
     return {
@@ -56,13 +60,15 @@ export function AchievementModal({ onClose }: AchievementModalProps) {
   const groupedAchievements = {
     streak: achievements.filter(a => a.category === 'streak'),
     meals: achievements.filter(a => a.category === 'meals'),
-    exercise: achievements.filter(a => a.category === 'exercise')
+    exercise: achievements.filter(a => a.category === 'exercise'),
+    water: achievements.filter(a => a.category === 'water')
   };
 
   const categoryLabels = {
     streak: 'Sorozat Kitüntetések',
     meals: 'Étkezés Kitüntetések',
-    exercise: 'Edzés Kitüntetések'
+    exercise: 'Edzés Kitüntetések',
+    water: 'Hidratáció Kitüntetések'
   };
 
   return (

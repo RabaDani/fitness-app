@@ -346,6 +346,10 @@ html {
 	.animate-slideIn {
 		animation: slideIn 0.3s ease-out;
 	}
+
+	.animate-slideOut {
+		animation: slideOut 0.3s ease-in forwards;
+	}
 }
 
 /* Keyframes for animations */
@@ -368,5 +372,16 @@ html {
 	to {
 		opacity: 1;
 		transform: translateY(0);
+	}
+}
+
+@keyframes slideOut {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-20px);
 	}
 }
