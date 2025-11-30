@@ -92,7 +92,7 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
                 <button
                   key={`glass-${index}-of-${totalGlasses}`}
                   onClick={handleGlassClick}
-                  class="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 rounded"
+                  class="cursor-pointer"
                   title={`${index + 1}. pohár - kattintásra feltöltés`}
                   type="button"
                 >
