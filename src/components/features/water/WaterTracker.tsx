@@ -77,6 +77,9 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
                 fillPercentage = ((filledAmount - glassStart) / (glassEnd - glassStart)) * 100;
               }
 
+              // Check if this is the next empty glass to fill
+              const isNextToFill = fillPercentage === 0 && (index === 0 || filledAmount >= glassStart);
+
               // Handle glass click - fill this glass and all glasses to the left
               const handleGlassClick = () => {
                 const targetGlassIndex = index + 1; // +1 because we want to include this glass
@@ -92,11 +95,11 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
                 <button
                   key={`glass-${index}-of-${totalGlasses}`}
                   onClick={handleGlassClick}
-                  class="cursor-pointer"
+                  class="cursor-pointer lg:hover:bg-gray-100 dark:hover:bg-gray-900 rounded"
                   title={`${index + 1}. pohár - kattintásra feltöltés`}
                   type="button"
                 >
-                  <Glass fillPercentage={fillPercentage} index={index} />
+                  <Glass fillPercentage={fillPercentage} index={index} showPlus={isNextToFill} />
                 </button>
               );
             })}

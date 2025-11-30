@@ -1,13 +1,16 @@
+import { Plus } from 'lucide-preact';
+
 interface GlassProps {
   fillPercentage: number; // 0 to 100
   index: number;
+  showPlus?: boolean; // Show plus icon for next glass to fill
 }
 
 /**
  * Glass component for water tracker
  * Displays a realistic glass - narrower at bottom, wider at top
  */
-export function Glass({ fillPercentage, index }: GlassProps) {
+export function Glass({ fillPercentage, index, showPlus = false }: GlassProps) {
   // Calculate water shape that follows glass trapezoid
   const waterHeight = (fillPercentage * 49) / 100;
   const waterTopY = 51 - waterHeight;
@@ -64,6 +67,13 @@ export function Glass({ fillPercentage, index }: GlassProps) {
           class="pointer-events-none"
         />
       </svg>
+      
+      {/* Plus icon for next glass to fill - positioned over the glass */}
+      {showPlus && (
+        <div class="absolute inset-0 flex items-center justify-center">
+            <Plus size={20} class="text-gray-500 dark:text-gray-200" strokeWidth={3} />
+        </div>
+      )}
     </div>
   );
 }
