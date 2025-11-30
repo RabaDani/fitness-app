@@ -73,7 +73,8 @@ export function ProfileView() {
       totalExercises: 0,
       totalCaloriesBurned: 0,
       achievementsUnlocked: [],
-      lastLogDate: ''
+      lastLogDate: '',
+      totalWaterLogged: 0
     });
     setShowResetConfirm(false);
   };

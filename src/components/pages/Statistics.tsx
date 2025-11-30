@@ -78,7 +78,7 @@ export function Statistics() {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Mai Kalória" value={todayTotal} unit="kcal" color="bg-indigo-500" />
         <StatCard title="Heti Átlag" value={weeklyAverage} unit="kcal" color="bg-green-500" />
-        <StatCard title="Heti Víz Átlag" value={(weeklyWaterAverage / 1000).toFixed(1)} unit="L" color="bg-blue-500" />
+        <StatCard title="Heti Víz Átlag" value={Number((weeklyWaterAverage / 1000).toFixed(1))} unit="L" color="bg-blue-500" />
         <StatCard title="Rögzített napok" value={loggedDays} unit="/ 30 nap" color="bg-orange-500" />
       </div>
 

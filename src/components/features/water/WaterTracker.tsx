@@ -77,8 +77,27 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
                 fillPercentage = ((filledAmount - glassStart) / (glassEnd - glassStart)) * 100;
               }
 
+              // Handle glass click - fill this glass and all glasses to the left
+              const handleGlassClick = () => {
+                const targetGlassIndex = index + 1; // +1 because we want to include this glass
+                const targetAmount = targetGlassIndex * 250; // Each glass is 250ml
+                const amountToAdd = targetAmount - currentIntake;
+                
+                if (amountToAdd !== 0) {
+                  onAddWater(amountToAdd);
+                }
+              };
+
               return (
-                <Glass key={`glass-${index}`} fillPercentage={fillPercentage} index={index} />
+                <button
+                  key={`glass-${index}-of-${totalGlasses}`}
+                  onClick={handleGlassClick}
+                  class="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900 rounded"
+                  title={`${index + 1}. pohár - kattintásra feltöltés`}
+                  type="button"
+                >
+                  <Glass fillPercentage={fillPercentage} index={index} />
+                </button>
               );
             })}
           </div>
@@ -87,25 +106,6 @@ export function WaterTracker({ currentIntake, dailyGoal, onAddWater, onReset }: 
           <button
             onClick={() => onAddWater(halfGlassAmount)}
             class="btn-secondary p-3 flex-shrink-0 hidden lg:block"
-            title="Fél pohár hozzáadása"
-          >
-            <Plus size={20} />
-          </button>
-        </div>
-
-        {/* Mobile buttons - below glasses, side by side */}
-        <div class="flex justify-center gap-3 mb-3 lg:hidden">
-          <button
-            onClick={() => onAddWater(-halfGlassAmount)}
-            disabled={!canSubtract}
-            class="btn-secondary p-3 disabled:opacity-30 flex-shrink-0"
-            title="Fél pohár levonása"
-          >
-            <Minus size={20} />
-          </button>
-          <button
-            onClick={() => onAddWater(halfGlassAmount)}
-            class="btn-secondary p-3 flex-shrink-0"
             title="Fél pohár hozzáadása"
           >
             <Plus size={20} />
